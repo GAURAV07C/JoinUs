@@ -1,0 +1,86 @@
+<svg width="500" height="800" viewBox="0 0 500 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Phone outline -->
+  <rect x="100" y="50" width="300" height="600" rx="30" fill="#FFFFFF" stroke="#8B4513" stroke-width="10" />
+  <rect x="110" y="60" width="280" height="580" rx="25" fill="#F5EFE6" />
+  
+  <!-- Screen content -->
+  <rect x="110" y="60" width="280" height="580" rx="25" fill="#FFFFFF" />
+  
+  <!-- Status bar -->
+  <rect x="110" y="60" width="280" height="40" rx="25" fill="#8B4513" />
+  <circle cx="130" cy="80" r="5" fill="#FFFFFF" />
+  <rect x="140" y="77" width="100" height="6" rx="3" fill="#FFFFFF" />
+  <rect x="340" y="77" width="30" height="6" rx="3" fill="#FFFFFF" />
+  
+  <!-- App header -->
+  <rect x="110" y="100" width="280" height="60" fill="#8B4513" />
+  <circle cx="140" cy="130" r="15" fill="#FFFFFF" />
+  <path d="M135,130 L145,130 M140,125 L140,135" stroke="#8B4513" stroke-width="2" />
+  <text x="250" y="135" font-family="Arial" font-size="16" fill="#FFFFFF" text-anchor="middle">joinUs</text>
+  <circle cx="350" cy="130" r="15" fill="#FFFFFF" />
+  <path d="M345,125 L355,135 M345,135 L355,125" stroke="#8B4513" stroke-width="2" />
+  
+  <!-- Featured product -->
+  <rect x="130" y="180" width="240" height="160" rx="10" fill="#F5EFE6" />
+  <text x="250" y="200" font-family="Arial" font-size="14" fill="#8B4513" text-anchor="middle">Featured Product</text>
+  <rect x="150" y="210" width="200" height="100" rx="5" fill="#FFFFFF" />
+  
+  <!-- Product image (Madhubani painting) -->
+  <circle cx="250" cy="260" r="30" fill="#F9A825" /> <!-- Sun -->
+  <path d="M250,230 L250,220" stroke="#2E7D32" stroke-width="2" />
+  <path d="M250,290 L250,300" stroke="#2E7D32" stroke-width="2" />
+  <path d="M220,260 L210,260" stroke="#2E7D32" stroke-width="2" />
+  <path d="M280,260 L290,260" stroke="#2E7D32" stroke-width="2" />
+  
+  <text x="250" y="330" font-family="Arial" font-size="12" fill="#5D4037" text-anchor="middle">Madhubani Painting</text>
+  <text x="250" y="345" font-family="Arial" font-size="12" fill="#8B4513" text-anchor="middle">₹2,499</text>
+  
+  <!-- Categories section -->
+  <text x="150" y="380" font-family="Arial" font-size="14" fill="#5D4037">Categories</text>
+  
+  <!-- Category cards -->
+  <rect x="130" y="390" width="70" height="70" rx="10" fill="#C62828" opacity="0.7" />
+  <text x="165" y="430" font-family="Arial" font-size="10" fill="#FFFFFF" text-anchor="middle">Home Decor</text>
+  
+  <rect x="210" y="390" width="70" height="70" rx="10" fill="#F9A825" opacity="0.7" />
+  <text x="245" y="430" font-family="Arial" font-size="10" fill="#FFFFFF" text-anchor="middle">Textiles</text>
+  
+  <rect x="290" y="390" width="70" height="70" rx="10" fill="#2E7D32" opacity="0.7" />
+  <text x="325" y="430" font-family="Arial" font-size="10" fill="#FFFFFF" text-anchor="middle">Pottery</text>
+  
+  <!-- Artisan spotlight -->
+  <text x="150" y="480" font-family="Arial" font-size="14" fill="#5D4037">Artisan Spotlight</text>
+  <rect x="130" y="490" width="240" height="80" rx="10" fill="#F5EFE6" />
+  <circle cx="170" cy="530" r="25" fill="#C68B59" />
+  <path d="M160,530 Q170,540 180,530" stroke="#000000" stroke-width="1" fill="none" /> <!-- Smile -->
+  <circle cx="165" cy="525" r="3" fill="#000000" /> <!-- Left eye -->
+  <circle cx="175" cy="525" r="3" fill="#000000" /> <!-- Right eye -->
+  
+  <text x="250" y="515" font-family="Arial" font-size="12" fill="#5D4037">Lakshmi Devi</text>
+  <text x="250" y="530" font-family="Arial" font-size="10" fill="#8B4513">Madhubani Artist</text>
+  <text x="250" y="545" font-family="Arial" font-size="10" fill="#5D4037">Bihar, India</text>
+  
+  <!-- Bottom navigation -->
+  <rect x="110" y="600" width="280" height="40" fill="#FFFFFF" stroke="#E2D9D0" stroke-width="1" />
+  
+  <circle cx="150" cy="620" r="15" fill="#FFFFFF" />
+  <path d="M145,615 L155,615 L155,625 L145,625 Z" stroke="#8B4513" stroke-width="2" fill="none" />
+  
+  <circle cx="200" cy="620" r="15" fill="#FFFFFF" />
+  <path d="M195,615 L205,625 M195,625 L205,615" stroke="#8B4513" stroke-width="2" />
+  
+  <circle cx="250" cy="620" r="15" fill="#FFFFFF" />
+  <circle cx="250" cy="620" r="7" fill="#8B4513" />
+  
+  <circle cx="300" cy="620" r="15" fill="#FFFFFF" />
+  <path d="M295,620 L305,620 M300,615 L300,625" stroke="#8B4513" stroke-width="2" />
+  
+  <circle cx="350" cy="620" r="15" fill="#FFFFFF" />
+  <circle cx="350" cy="615" r="3" fill="#8B4513" />
+  <path d="M345,620 L355,620" stroke="#8B4513" stroke-width="2" />
+  <path d="M350,625 Q345,630 350,635 Q355,630 350,625" fill="#8B4513" />
+  
+  <!-- Home button -->
+  <circle cx="250" y="700" r="25" fill="#FFFFFF" stroke="#8B4513" stroke-width="2" />
+  <rect x="240" y="690" width="20" height="20" rx="2" stroke="#8B4513" stroke-width="2" fill="none" />
+</svg>

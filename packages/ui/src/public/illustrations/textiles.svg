@@ -1,0 +1,34 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F5EFE6" />
+  
+  <!-- Saree draped -->
+  <path d="M100,100 Q300,50 500,100 L500,400 Q300,450 100,400 Z" fill="#F9A825" />
+  
+  <!-- Border pattern -->
+  <rect x="100" y="380" width="400" height="20" fill="#8B4513" />
+  
+  <!-- Decorative patterns -->
+  <circle cx="200" cy="200" r="30" fill="#C62828" />
+  <circle cx="400" cy="200" r="30" fill="#C62828" />
+  <circle cx="300" cy="300" r="30" fill="#C62828" />
+  
+  <path d="M200,200 L230,170 L260,200 L230,230 Z" fill="#F5EFE6" />
+  <path d="M400,200 L430,170 L460,200 L430,230 Z" fill="#F5EFE6" />
+  <path d="M300,300 L330,270 L360,300 L330,330 Z" fill="#F5EFE6" />
+  
+  <!-- Small decorative elements -->
+  <circle cx="150" cy="150" r="5" fill="#2E7D32" />
+  <circle cx="250" cy="150" r="5" fill="#2E7D32" />
+  <circle cx="350" cy="150" r="5" fill="#2E7D32" />
+  <circle cx="450" cy="150" r="5" fill="#2E7D32" />
+  
+  <circle cx="150" cy="250" r="5" fill="#2E7D32" />
+  <circle cx="250" cy="250" r="5" fill="#2E7D32" />
+  <circle cx="350" cy="250" r="5" fill="#2E7D32" />
+  <circle cx="450" cy="250" r="5" fill="#2E7D32" />
+  
+  <circle cx="150" cy="350" r="5" fill="#2E7D32" />
+  <circle cx="250" cy="350" r="5" fill="#2E7D32" />
+  <circle cx="350" cy="350" r="5" fill="#2E7D32" />
+  <circle cx="450" cy="350" r="5" fill="#2E7D32" />
+</svg>

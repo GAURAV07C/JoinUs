@@ -1,0 +1,39 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F5EFE6" />
+  
+  <!-- Top wooden piece -->
+  <rect x="200" y="100" width="200" height="20" fill="#8B4513" />
+  
+  <!-- Hanging string -->
+  <line x1="300" y1="100" x2="300" y2="50" stroke="#5D4037" stroke-width="2" />
+  
+  <!-- Terracotta bells -->
+  <path d="M220,200 Q220,150 250,150 Q280,150 280,200 Q280,220 250,230 Q220,220 220,200 Z" fill="#C62828" />
+  <line x1="250" y1="150" x2="250" y2="120" stroke="#5D4037" stroke-width="2" />
+  <line x1="250" y1="230" x2="250" y2="250" stroke="#5D4037" stroke-width="2" />
+  <circle cx="250" cy="250" r="5" fill="#5D4037" />
+  
+  <path d="M270,250 Q270,200 300,200 Q330,200 330,250 Q330,270 300,280 Q270,270 270,250 Z" fill="#C62828" />
+  <line x1="300" y1="200" x2="300" y2="120" stroke="#5D4037" stroke-width="2" />
+  <line x1="300" y1="280" x2="300" y2="300" stroke="#5D4037" stroke-width="2" />
+  <circle cx="300" cy="300" r="5" fill="#5D4037" />
+  
+  <path d="M320,300 Q320,250 350,250 Q380,250 380,300 Q380,320 350,330 Q320,320 320,300 Z" fill="#C62828" />
+  <line x1="350" y1="250" x2="350" y2="120" stroke="#5D4037" stroke-width="2" />
+  <line x1="350" y1="330" x2="350" y2="350" stroke="#5D4037" stroke-width="2" />
+  <circle cx="350" cy="350" r="5" fill="#5D4037" />
+  
+  <!-- Decorative patterns on bells -->
+  <path d="M230,180 L270,180" stroke="#F9A825" stroke-width="2" fill="none" />
+  <path d="M280,230 L320,230" stroke="#F9A825" stroke-width="2" fill="none" />
+  <path d="M330,280 L370,280" stroke="#F9A825" stroke-width="2" fill="none" />
+  
+  <circle cx="250" cy="170" r="5" fill="#F9A825" />
+  <circle cx="300" cy="220" r="5" fill="#F9A825" />
+  <circle cx="350" cy="270" r="5" fill="#F9A825" />
+  
+  <!-- Strings connecting to wooden piece -->
+  <line x1="250" y1="120" x2="220" y2="110" stroke="#5D4037" stroke-width="2" />
+  <line x1="300" y1="120" x2="300" y2="110" stroke="#5D4037" stroke-width="2" />
+  <line x1="350" y1="120" x2="380" y2="110" stroke="#5D4037" stroke-width="2" />
+</svg>

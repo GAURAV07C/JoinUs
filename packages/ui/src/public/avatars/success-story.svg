@@ -1,0 +1,31 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="50" r="50" fill="#F5EFE6" />
+  
+  <!-- Face -->
+  <circle cx="50" cy="40" r="25" fill="#C68B59" />
+  
+  <!-- Eyes -->
+  <circle cx="40" cy="35" r="3" fill="#000000" />
+  <circle cx="60" cy="35" r="3" fill="#000000" />
+  
+  <!-- Smile -->
+  <path d="M40,45 Q50,55 60,45" stroke="#000000" stroke-width="2" fill="none" />
+  
+  <!-- Hair -->
+  <path d="M25,25 Q50,5 75,25 L75,40 Q50,30 25,40 Z" fill="#000000" />
+  
+  <!-- Bindi -->
+  <circle cx="50" cy="25" r="3" fill="#C62828" />
+  
+  <!-- Earrings -->
+  <circle cx="25" cy="40" r="3" fill="#F9A825" />
+  <circle cx="75" cy="40" r="3" fill="#F9A825" />
+  
+  <!-- Saree -->
+  <path d="M25,65 L25,100 L75,100 L75,65 Q50,75 25,65 Z" fill="#2E7D32" />
+  <path d="M25,65 Q50,75 75,65 L75,80 Q50,90 25,80 Z" fill="#F9A825" />
+  
+  <!-- Paintbrush -->
+  <rect x="70" y="50" width="20" height="5" fill="#8B4513" />
+  <rect x="90" y="48" width="5" height="9" fill="#2E7D32" />
+</svg>

@@ -1,0 +1,10 @@
+{
+  "extends": "@joinUs/typescript-config/base.json",
+  "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@joinUs/backend-common/types"
+    ]
+  },
+  "include": ["src"]
+}

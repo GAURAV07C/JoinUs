@@ -1,0 +1,46 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F5EFE6" />
+  
+  <!-- Saree draped -->
+  <path d="M100,100 Q300,50 500,100 L500,400 Q300,450 100,400 Z" fill="#2E7D32" opacity="0.7" />
+  
+  <!-- Border pattern -->
+  <rect x="100" y="380" width="400" height="20" fill="#F9A825" />
+  <rect x="100" y="100" width="400" height="20" fill="#F9A825" />
+  
+  <!-- Decorative patterns -->
+  <circle cx="200" cy="200" r="30" fill="#F9A825" opacity="0.7" />
+  <circle cx="400" cy="200" r="30" fill="#F9A825" opacity="0.7" />
+  <circle cx="300" cy="300" r="30" fill="#F9A825" opacity="0.7" />
+  
+  <path d="M200,200 L230,170 L260,200 L230,230 Z" fill="#F5EFE6" />
+  <path d="M400,200 L430,170 L460,200 L430,230 Z" fill="#F5EFE6" />
+  <path d="M300,300 L330,270 L360,300 L330,330 Z" fill="#F5EFE6" />
+  
+  <!-- Small decorative elements -->
+  <circle cx="150" cy="150" r="5" fill="#F9A825" />
+  <circle cx="250" cy="150" r="5" fill="#F9A825" />
+  <circle cx="350" cy="150" r="5" fill="#F9A825" />
+  <circle cx="450" cy="150" r="5" fill="#F9A825" />
+  
+  <circle cx="150" cy="250" r="5" fill="#F9A825" />
+  <circle cx="250" cy="250" r="5" fill="#F9A825" />
+  <circle cx="350" cy="250" r="5" fill="#F9A825" />
+  <circle cx="450" cy="250" r="5" fill="#F9A825" />
+  
+  <circle cx="150" cy="350" r="5" fill="#F9A825" />
+  <circle cx="250" cy="350" r="5" fill="#F9A825" />
+  <circle cx="350" cy="350" r="5" fill="#F9A825" />
+  <circle cx="450" cy="350" r="5" fill="#F9A825" />
+  
+  <!-- Intricate border pattern -->
+  <path d="M100,380 L100,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M150,380 L150,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M200,380 L200,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M250,380 L250,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M300,380 L300,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M350,380 L350,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M400,380 L400,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M450,380 L450,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M500,380 L500,400" stroke="#C62828" stroke-width="2" fill="none" />
+</svg>

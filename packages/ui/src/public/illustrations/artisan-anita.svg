@@ -1,0 +1,53 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F5EFE6" />
+  
+  <!-- Background elements -->
+  <rect x="100" y="100" width="400" height="400" fill="#F5EFE6" stroke="#8B4513" stroke-width="5" />
+  
+  <!-- Artisan figure -->
+  <circle cx="300" cy="200" r="50" fill="#C68B59" /> <!-- Head -->
+  <path d="M270,200 Q300,230 330,200" stroke="#000000" stroke-width="2" fill="none" /> <!-- Smile -->
+  <circle cx="280" cy="185" r="5" fill="#000000" /> <!-- Left eye -->
+  <circle cx="320" cy="185" r="5" fill="#000000" /> <!-- Right eye -->
+  
+  <path d="M300,250 L300,350" stroke="#F9A825" stroke-width="30" fill="none" /> <!-- Body/Saree -->
+  <path d="M300,270 L250,320" stroke="#F9A825" stroke-width="10" fill="none" /> <!-- Left arm -->
+  <path d="M300,270 L350,320" stroke="#F9A825" stroke-width="10" fill="none" /> <!-- Right arm -->
+  
+  <!-- Bandhani fabric being tied -->
+  <rect x="200" y="350" width="200" height="100" fill="#C62828" />
+  
+  <!-- Tie-dye pattern -->
+  <circle cx="220" cy="370" r="5" fill="#FFFFFF" />
+  <circle cx="260" cy="370" r="5" fill="#FFFFFF" />
+  <circle cx="300" cy="370" r="5" fill="#FFFFFF" />
+  <circle cx="340" cy="370" r="5" fill="#FFFFFF" />
+  <circle cx="380" cy="370" r="5" fill="#FFFFFF" />
+  
+  <circle cx="240" cy="400" r="5" fill="#FFFFFF" />
+  <circle cx="280" cy="400" r="5" fill="#FFFFFF" />
+  <circle cx="320" cy="400" r="5" fill="#FFFFFF" />
+  <circle cx="360" cy="400" r="5" fill="#FFFFFF" />
+  
+  <circle cx="220" cy="430" r="5" fill="#FFFFFF" />
+  <circle cx="260" cy="430" r="5" fill="#FFFFFF" />
+  <circle cx="300" cy="430" r="5" fill="#FFFFFF" />
+  <circle cx="340" cy="430" r="5" fill="#FFFFFF" />
+  <circle cx="380" cy="430" r="5" fill="#FFFFFF" />
+  
+  <!-- Thread being used for tying -->
+  <path d="M250,320 L240,400" stroke="#FFFFFF" stroke-width="2" fill="none" />
+  
+  <!-- Traditional jewelry -->
+  <circle cx="300" cy="240" r="5" fill="#F9A825" /> <!-- Necklace -->
+  <circle cx="290" cy="240" r="5" fill="#F9A825" />
+  <circle cx="310" cy="240" r="5" fill="#F9A825" />
+  <circle cx="280" cy="240" r="5" fill="#F9A825" />
+  <circle cx="320" cy="240" r="5" fill="#F9A825" />
+  
+  <circle cx="270" cy="200" r="5" fill="#F9A825" /> <!-- Earring -->
+  <circle cx="330" cy="200" r="5" fill="#F9A825" /> <!-- Earring -->
+  
+  <!-- Bindi -->
+  <circle cx="300" cy="170" r="3" fill="#C62828" />
+</svg>

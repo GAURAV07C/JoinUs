@@ -1,24 +1,50 @@
 {
-  "name": "JoinUs",
+  "name": "joinUs",
   "private": true,
+  "prisma": {
+    "schema": "packages/database/prisma/schema.prisma",
+    "seed": "tsx packages/database/src/seed.ts"
+  },
   "scripts": {
+    "check-types": "turbo run check-types",
     "build": "turbo run build",
+    "db:migrate:deploy": "turbo run db:migrate:deploy",
+    "db:migrate:dev": "turbo run db:migrate:dev",
+    "db:push": "turbo run db:push",
+    "db:seed": "turbo run db:seed",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "generate": "turbo run generate",
+    "lint": "turbo run lint"
   },
   "devDependencies": {
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.5",
-    "typescript": "5.8.3"
+    "@joinUs/eslint-config": "workspace:*",
+    "@joinUs/typescript-config": "workspace:*",
+    "@types/node": "^22.13.17",
+    "prettier": "^3.2.5",
+    "prisma": "latest",
+    "tsx": "4.19.1",
+    "turbo": "^2.4.4"
   },
+  "packageManager": "pnpm@10.4.1",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
-  "packageManager": "npm@9.8.1",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "dependencies": {
+    "@prisma/client": "latest",
+    "@radix-ui/react-label": "^2.1.2"
+  },
+  "description": ".",
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GAURAV07C/joinUs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GAURAV07C/joinUs/issues"
+  },
+  "homepage": "https://github.com/GAURAV07C/joinUs#readme"
 }

@@ -1,0 +1,45 @@
+<svg width="800" height="450" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#F5EFE6" />
+  
+  <!-- Living room setting -->
+  <rect x="0" y="300" width="800" height="150" fill="#8B4513" opacity="0.3" /> <!-- Floor -->
+  <rect x="50" y="50" width="700" height="250" fill="#F9A825" opacity="0.1" /> <!-- Wall -->
+  
+  <!-- Woman sitting on sofa -->
+  <rect x="300" y="250" width="200" height="100" rx="20" fill="#C62828" /> <!-- Sofa -->
+  <rect x="280" y="250" width="20" height="100" fill="#8B4513" /> <!-- Sofa arm -->
+  <rect x="500" y="250" width="20" height="100" fill="#8B4513" /> <!-- Sofa arm -->
+  
+  <!-- Person -->
+  <circle cx="400" cy="200" r="40" fill="#C68B59" /> <!-- Head -->
+  <path d="M380,200 Q400,220 420,200" stroke="#000000" stroke-width="2" fill="none" /> <!-- Smile -->
+  <circle cx="385" cy="190" r="5" fill="#000000" /> <!-- Left eye -->
+  <circle cx="415" cy="190" r="5" fill="#000000" /> <!-- Right eye -->
+  
+  <path d="M400,240 L400,300" stroke="#2E7D32" stroke-width="20" fill="none" /> <!-- Body -->
+  <path d="M400,260 L370,290" stroke="#2E7D32" stroke-width="8" fill="none" /> <!-- Left arm -->
+  <path d="M400,260 L430,290" stroke="#2E7D32" stroke-width="8" fill="none" /> <!-- Right arm -->
+  
+  <!-- Madhubani painting on wall -->
+  <rect x="150" y="100" width="150" height="150" fill="#FFFFFF" stroke="#8B4513" stroke-width="5" />
+  
+  <circle cx="225" cy="150" r="30" fill="#F9A825" /> <!-- Sun in painting -->
+  <path d="M225,120 L225,100" stroke="#2E7D32" stroke-width="2" fill="none" />
+  <path d="M225,180 L225,200" stroke="#2E7D32" stroke-width="2" fill="none" />
+  <path d="M195,150 L175,150" stroke="#2E7D32" stroke-width="2" fill="none" />
+  <path d="M255,150 L275,150" stroke="#2E7D32" stroke-width="2" fill="none" />
+  
+  <!-- Coffee table -->
+  <rect x="350" y="320" width="100" height="10" fill="#8B4513" />
+  <rect x="360" y="330" width="10" height="50" fill="#8B4513" />
+  <rect x="430" y="330" width="10" height="50" fill="#8B4513" />
+  
+  <!-- Decorative items -->
+  <rect x="500" y="150" width="150" height="100" fill="#F5EFE6" stroke="#8B4513" stroke-width="3" /> <!-- Another frame -->
+  <path d="M550,150 Q600,100 650,150" stroke="#C62828" stroke-width="3" fill="none" />
+  <path d="M550,250 Q600,300 650,250" stroke="#C62828" stroke-width="3" fill="none" />
+  
+  <!-- Video recording indicator -->
+  <circle cx="700" cy="100" r="20" fill="#C62828" />
+  <circle cx="700" cy="100" r="10" fill="#FFFFFF" />
+</svg>

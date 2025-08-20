@@ -1,0 +1,7 @@
+<svg width="200" height="100" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="100" fill="#FFFFFF" />
+  <text x="100" y="40" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#000000">Development Commissioner</text>
+  <text x="100" y="55" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#000000">Handicrafts</text>
+  <path d="M70,70 Q100,60 130,70 Q100,80 70,70 Z" fill="none" stroke="#8B4513" stroke-width="2" />
+  <circle cx="100" cy="70" r="5" fill="#8B4513" />
+</svg>

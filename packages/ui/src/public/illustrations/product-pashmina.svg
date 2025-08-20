@@ -1,0 +1,38 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F5EFE6" />
+  
+  <!-- Pashmina shawl draped -->
+  <path d="M100,150 Q300,100 500,150 L500,450 Q300,500 100,450 Z" fill="#8B4513" opacity="0.7" />
+  
+  <!-- Border pattern -->
+  <rect x="100" y="430" width="400" height="20" fill="#C62828" />
+  <rect x="100" y="150" width="400" height="20" fill="#C62828" />
+  
+  <!-- Paisley patterns -->
+  <path d="M200,250 Q220,230 200,210 Q180,230 200,250 Z" fill="#F9A825" />
+  <path d="M400,250 Q420,230 400,210 Q380,230 400,250 Z" fill="#F9A825" />
+  <path d="M200,350 Q220,330 200,310 Q180,330 200,350 Z" fill="#F9A825" />
+  <path d="M400,350 Q420,330 400,310 Q380,330 400,350 Z" fill="#F9A825" />
+  <path d="M300,300 Q320,280 300,260 Q280,280 300,300 Z" fill="#F9A825" />
+  
+  <!-- Intricate embroidery -->
+  <path d="M150,200 Q200,220 250,200" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M350,200 Q400,220 450,200" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M150,400 Q200,380 250,400" stroke="#C62828" stroke-width="2" fill="none" />
+  <path d="M350,400 Q400,380 450,400" stroke="#C62828" stroke-width="2" fill="none" />
+  
+  <circle cx="150" cy="200" r="5" fill="#C62828" />
+  <circle cx="250" cy="200" r="5" fill="#C62828" />
+  <circle cx="350" cy="200" r="5" fill="#C62828" />
+  <circle cx="450" cy="200" r="5" fill="#C62828" />
+  <circle cx="150" cy="400" r="5" fill="#C62828" />
+  <circle cx="250" cy="400" r="5" fill="#C62828" />
+  <circle cx="350" cy="400" r="5" fill="#C62828" />
+  <circle cx="450" cy="400" r="5" fill="#C62828" />
+  
+  <!-- Folds in fabric -->
+  <path d="M150,200 Q200,220 200,300 Q200,380 150,400" stroke="#5D4037" stroke-width="1" fill="none" opacity="0.3" />
+  <path d="M250,200 Q300,220 300,300 Q300,380 250,400" stroke="#5D4037" stroke-width="1" fill="none" opacity="0.3" />
+  <path d="M350,200 Q400,220 400,300 Q400,380 350,400" stroke="#5D4037" stroke-width="1" fill="none" opacity="0.3" />
+  <path d="M450,200 Q500,220 500,300 Q500,380 450,400" stroke="#5D4037" stroke-width="1" fill="none" opacity="0.3" />
+</svg>

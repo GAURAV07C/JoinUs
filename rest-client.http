@@ -1,0 +1,190 @@
+### get all products
+GET  http://localhost:8080/api/product/
+
+
+"build": "tsc -b",
+    "start": "node ./dist/index.js",
+    "dev": "nodemon --exec ts-node src/index.ts"
+
+
+### Seller Login
+POST http://localhost:8000/api/seller/auth/login
+Content-Type: application/json
+
+{
+  "email": "buyer12@example.com",
+  "name": "John Doe",
+  "password": "securePassword",
+  "confirm_password": "securePassword",
+  "role": "SELLER",
+  "phone": "9876543210",
+  "businessName": "joinUs Pvt Ltd",
+  "panNumber": "ABCDE1234F",
+  "bankAccount": "123456789012"
+}
+
+### product post
+POST  http://localhost:8000/api/seller/product/
+Content-Type:  application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODI5NTgwLCJleHAiOjE3NDU0MzQzODB9.3YSyVo30Cd6m8Sb-_xGPC0eghfdpFv4KiFtn6ffhvpY
+
+{
+   "name": "Handmade Cottons Diyas Wicks",
+  "description": "Eco-friendly cotton wicks made by rural women. Perfect for daily pooja.",
+  "status": "PENDING",
+  "categoryId": "4d3b6ed9-f37d-400e-a566-f327a38c7631", 
+  "imageUrl": [
+    "/illustrations/product-madhubani.svg",
+    "/illustrations/product-pashmina.svg"
+  ],
+  "variants": [
+    {
+      "price": 49,
+      "stock": 100,
+      "isMadeToOrder": false
+    }
+    
+  ]
+}
+
+### update product
+PATCH   http://localhost:8000/api/seller/product/cbcd87fc-d4d3-4c35-b276-abdddfaa063e
+Content-Type:  application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0Njk1NDgzLCJleHAiOjE3NDUzMDAyODN9.BPPl8-2gp6Xq-GQOBFZVGp_DpauRrKRhl40KvXU13hQ
+
+{
+  "categoryId":"4d3b6ed9-f37d-400e-a566-f327a38c7631"
+}
+
+### product get
+GET   http://localhost:8000/api/seller/product/
+Content-Type:  application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0Njk1NDgzLCJleHAiOjE3NDUzMDAyODN9.BPPl8-2gp6Xq-GQOBFZVGp_DpauRrKRhl40KvXU13hQ
+
+
+### product  delete
+DELETE    http://localhost:8000/api/seller/product/
+Content-Type:  application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0Njk1NDgzLCJleHAiOjE3NDUzMDAyODN9.BPPl8-2gp6Xq-GQOBFZVGp_DpauRrKRhl40KvXU13hQ
+
+{
+  
+}
+
+###admin signup
+POST  http://localhost:8081/api/admin/auth/signup
+{
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "strongpassword123",
+  "confirm_password":"strongpassword123",
+  "role": "ADMIN"
+}
+
+###admin login
+POST http://localhost:8081/api/admin/auth/login
+Content-Type: application/json
+
+{
+    "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "strongpassword123",
+  "confirm_password":"strongpassword123",
+  "role": "ADMIN"
+}
+
+###admin category create
+POST http://localhost:8081/api/admin/category/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzNTg3YzY2LTMwMTYtNGJkYS1hYjkwLWQwZjM4MjZiNDYxNCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjpbIkFETUlOIl0sImlhdCI6MTc0NDcyMDI4MCwiZXhwIjoxNzQ1MzI1MDgwfQ.jillKEcfCeRBngls9fpykKBhLPo1c3QAqjhYd4DZrqo
+
+{
+  "name":"cotton"
+}
+
+### get to cart 
+GET http://localhost:8080/api/cart
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+
+### add to  cart
+POST  http://localhost:8080/api/cart/addCart
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+{
+  "userId":"e65dc492-676b-4d89-93b7-11ab72ee2028",
+  "productId":"905379b9-f7c0-4fea-bc49-56d8fa122775",
+  "quantity":1
+}
+
+
+### update to  cart
+PUT   http://localhost:8080/api/cart/update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+{
+  "productId" : "905379b9-f7c0-4fea-bc49-56d8fa122775",
+
+"quantity": 2,
+
+"userId": "e65dc492-676b-4d89-93b7-11ab72ee2028"
+}
+
+### delete all iteam
+DELETE    http://localhost:8080/api/cart/clear
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+### delete cart iteam by id cart
+DELETE    http://localhost:8080/api/cart/remove/905379b9-f7c0-4fea-bc49-56d8fa122775
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+
+
+
+
+
+### add to  wishlist
+POST  http://localhost:8080/api/wishlist/add
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+{
+
+  "productId":"905379b9-f7c0-4fea-bc49-56d8fa122775"
+}
+
+### get to wishlist 
+GET http://localhost:8080/api/wishlist
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+
+### delete all iteam from wishlist
+DELETE    http://localhost:8080/api/wishlist/clear
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+
+
+### delete iteam from wishlist by id
+DELETE    http://localhost:8080/api/wishlist/remove/905379b9-f7c0-4fea-bc49-56d8fa122775
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+
+
+
+### move t0 wishlist to cart
+POST  http://localhost:8080/api/wishlist/moveToCart
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NWRjNDkyLTY3NmItNGQ4OS05M2I3LTExYWI3MmVlMjAyOCIsImVtYWlsIjoiYnV5ZXIxMkBleGFtcGxlLmNvbSIsInJvbGUiOlsiQlVZRVIiLCJTRUxMRVIiXSwiaWF0IjoxNzQ0ODkxNDc4LCJleHAiOjE3NDU0OTYyNzh9.NcSnzqkcZrvCBO7s9Nv7z9Az981A5UJ3GhrdeBq2HqE
+
+{
+  "productId":"905379b9-f7c0-4fea-bc49-56d8fa122775",
+  "userId":"e65dc492-676b-4d89-93b7-11ab72ee2028"
+}

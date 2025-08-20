@@ -1,0 +1,32 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F5EFE6" />
+  
+  <!-- Journal cover -->
+  <rect x="150" y="150" width="300" height="400" fill="#8B4513" />
+  <rect x="155" y="155" width="290" height="390" fill="#8B4513" stroke="#5D4037" stroke-width="2" />
+  
+  <!-- Binding -->
+  <rect x="150" y="150" width="20" height="400" fill="#5D4037" />
+  
+  <!-- Embossed design -->
+  <rect x="200" y="200" width="200" height="300" fill="none" stroke="#5D4037" stroke-width="3" />
+  
+  <!-- Decorative corner elements -->
+  <path d="M200,200 L220,200 L220,220 L200,220 Z" fill="#C68B59" />
+  <path d="M400,200 L380,200 L380,220 L400,220 Z" fill="#C68B59" />
+  <path d="M200,500 L220,500 L220,480 L200,480 Z" fill="#C68B59" />
+  <path d="M400,500 L380,500 L380,480 L400,480 Z" fill="#C68B59" />
+  
+  <!-- Central embossed design -->
+  <circle cx="300" cy="350" r="50" fill="none" stroke="#C68B59" stroke-width="3" />
+  <path d="M270,320 L330,380" stroke="#C68B59" stroke-width="3" fill="none" />
+  <path d="M330,320 L270,380" stroke="#C68B59" stroke-width="3" fill="none" />
+  
+  <!-- Decorative patterns -->
+  <path d="M250,250 L350,250" stroke="#C68B59" stroke-width="2" fill="none" />
+  <path d="M250,450 L350,450" stroke="#C68B59" stroke-width="2" fill="none" />
+  
+  <!-- Strap and clasp -->
+  <path d="M450,300 L470,300 L470,400 L450,400 Z" fill="#5D4037" />
+  <circle cx="460" cy="350" r="10" fill="#C68B59" />
+</svg>

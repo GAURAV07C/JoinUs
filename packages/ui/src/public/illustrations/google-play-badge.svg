@@ -1,0 +1,14 @@
+<svg width="180" height="53" viewBox="0 0 180 53" xmlns="http://www.w3.org/2000/svg">
+  <!-- Badge background -->
+  <rect width="180" height="53" rx="5" fill="#000000" />
+  
+  <!-- Google Play icon -->
+  <path d="M20,15 L35,26.5 L20,38 Z" fill="#FFFFFF" />
+  <path d="M20,15 L40,26.5 L50,20 L30,10 Z" fill="#4CAF50" />
+  <path d="M20,38 L40,26.5 L50,33 L30,43 Z" fill="#F44336" />
+  <path d="M30,10 L50,20 L50,33 L30,43 Z" fill="#FFC107" />
+  
+  <!-- Text -->
+  <text x="65" y="25" font-family="Arial" font-size="10" fill="#AAAAAA">GET IT ON</text>
+  <text x="65" y="40" font-family="Arial" font-size="16" font-weight="bold" fill="#FFFFFF">Google Play</text>
+</svg>

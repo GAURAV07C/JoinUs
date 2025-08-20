@@ -1,0 +1,54 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F5EFE6" />
+  
+  <!-- Dhokra figurine - elephant -->
+  <ellipse cx="300" cy="450" rx="150" ry="30" fill="#8B4513" opacity="0.3" /> <!-- Shadow -->
+  
+  <!-- Body -->
+  <ellipse cx="300" cy="350" rx="120" ry="70" fill="#C68B59" />
+  
+  <!-- Head -->
+  <circle cx="180" cy="300" r="40" fill="#C68B59" />
+  
+  <!-- Trunk -->
+  <path d="M150,310 Q130,350 150,390" stroke="#C68B59" stroke-width="20" fill="none" />
+  
+  <!-- Ears -->
+  <ellipse cx="190" cy="260" rx="30" ry="40" fill="#C68B59" />
+  <ellipse cx="190" cy="260" rx="20" ry="30" fill="#8B4513" opacity="0.3" />
+  
+  <!-- Legs -->
+  <rect x="220" y="400" width="20" height="50" fill="#C68B59" />
+  <rect x="260" y="400" width="20" height="50" fill="#C68B59" />
+  <rect x="320" y="400" width="20" height="50" fill="#C68B59" />
+  <rect x="360" y="400" width="20" height="50" fill="#C68B59" />
+  
+  <!-- Tail -->
+  <path d="M420,350 Q440,370 430,400" stroke="#C68B59" stroke-width="10" fill="none" />
+  
+  <!-- Decorative patterns -->
+  <path d="M220,330 L380,330" stroke="#8B4513" stroke-width="3" fill="none" />
+  <path d="M220,350 L380,350" stroke="#8B4513" stroke-width="3" fill="none" />
+  <path d="M220,370 L380,370" stroke="#8B4513" stroke-width="3" fill="none" />
+  
+  <circle cx="240" cy="340" r="5" fill="#8B4513" />
+  <circle cx="280" cy="340" r="5" fill="#8B4513" />
+  <circle cx="320" cy="340" r="5" fill="#8B4513" />
+  <circle cx="360" cy="340" r="5" fill="#8B4513" />
+  
+  <circle cx="240" cy="360" r="5" fill="#8B  />
+  <circle cx="360" cy="340" r="5" fill="#8B4513" />
+  
+  <circle cx="240" cy="360" r="5" fill="#8B4513" />
+  <circle cx="280" cy="360" r="5" fill="#8B4513" />
+  <circle cx="320" cy="360" r="5" fill="#8B4513" />
+  <circle cx="360" cy="360" r="5" fill="#8B4513" />
+  
+  <!-- Eyes -->
+  <circle cx="170" cy="290" r="5" fill="#000000" />
+  <circle cx="190" cy="290" r="5" fill="#000000" />
+  
+  <!-- Tusks -->
+  <path d="M160,320 L140,310" stroke="#F5EFE6" stroke-width="5" fill="none" />
+  <path d="M160,330 L140,340" stroke="#F5EFE6" stroke-width="5" fill="none" />
+</svg>

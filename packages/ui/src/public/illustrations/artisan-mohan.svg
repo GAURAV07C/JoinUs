@@ -1,0 +1,56 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F5EFE6" />
+  
+  <!-- Background elements -->
+  <rect x="100" y="100" width="400" height="400" fill="#F5EFE6" stroke="#8B4513" stroke-width="5" />
+  
+  <!-- Artisan figure -->
+  <circle cx="300" cy="200" r="50" fill="#C68B59" /> <!-- Head -->
+  <path d="M270,200 Q300,230 330,200" stroke="#000000" stroke-width="2" fill="none" /> <!-- Smile -->
+  <circle cx="280" cy="185" r="5" fill="#000000" /> <!-- Left eye -->
+  <circle cx="320" cy="185" r="5" fill="#000000" /> <!-- Right eye -->
+  
+  <path d="M300,250 L300,350" stroke="#8B4513" stroke-width="30" fill="none" /> <!-- Body -->
+  <path d="M300,270 L250,320" stroke="#8B4513" stroke-width="10" fill="none" /> <!-- Left arm -->
+  <path d="M300,270 L350,320" stroke="#8B4513" stroke-width="10" fill="none" /> <!-- Right arm -->
+  
+  <!-- Loom -->
+  <rect x="150" y="350" width="300" height="10" fill="#8B4513" /> <!-- Top beam -->
+  <rect x="150" y="450" width="300" height="10" fill="#8B4513" /> <!-- Bottom beam -->
+  <line x1="175" y1="350" x2="175" y2="450" stroke="#8B4513" stroke-width="5" /> <!-- Left vertical -->
+  <line x1="425" y1="350" x2="425" y2="450" stroke="#8B4513" stroke-width="5" /> <!-- Right vertical -->
+  
+  <!-- Banarasi saree being woven -->
+  <rect x="175" y="360" width="250" height="80" fill="#F9A825" />
+  
+  <!-- Gold thread patterns -->
+  <path d="M200,370 L400,370" stroke="#C68B59" stroke-width="2" fill="none" />
+  <path d="M200,390" stroke="#C68B59" stroke-width="2" fill="none" />
+  <path d="M200,410" stroke="#C68B59" stroke-width="2" fill="none" />
+  <path d="M200,430" stroke="#C68B59" stroke-width="2" fill="none" />
+  
+  <circle cx="220" cy="380" r="5" fill="#C68B59" />
+  <circle cx="260" cy="380" r="5" fill="#C68B59" />
+  <circle cx="300" cy="380" r="5" fill="#C68B59" />
+  <circle cx="340" cy="380" r="5" fill="#C68B59" />
+  <circle cx="380" cy="380" r="5" fill="#C68B59" />
+  
+  <circle cx="240" cy="400" r="5" fill="#C68B59" />
+  <circle cx="280" cy="400" r="5" fill="#C68B59" />
+  <circle cx="320" cy="400" r="5" fill="#C68B59" />
+  <circle cx="360" cy="400" r="5" fill="#C68B59" />
+  
+  <circle cx="220" cy="420" r="5" fill="#C68B59" />
+  <circle cx="260" cy="420" r="5" fill="#C68B59" />
+  <circle cx="300" cy="420" r="5" fill="#C68B59" />
+  <circle cx="340" cy="420" r="5" fill="#C68B59" />
+  <circle cx="380" cy="420" r="5" fill="#C68B59" />
+  
+  <!-- Traditional turban -->
+  <path d="M250,170 Q300,140 350,170" stroke="#F9A825" stroke-width="20" fill="none" />
+  
+  <!-- Mustache and beard -->
+  <path d="M280,210 L270,205" stroke="#000000" stroke-width="3" fill="none" />
+  <path d="M320,210 L330,205" stroke="#000000" stroke-width="3" fill="none" />
+  <path d="M290,220 Q300,230 310,220" stroke="#000000" stroke-width="2" fill="none" />
+</svg>
