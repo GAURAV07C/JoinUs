@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./../generated/client"
 }
 
 datasource db {
@@ -8,287 +7,186 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  BUYER
-  SELLER
-  ADMIN
-  DELIVERY_PARTNER
-}
 
-enum SellerStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
 
-enum ProductStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
 
-enum OrderStatus {
-  PENDING
-  CONFIRMED
-  SHIPPED
-  DELIVERED
-  CANCELLED
-}
 
-enum PaymentStatus {
-  PENDING
-  SUCCESS
-  FAILED
-}
 
-enum DeliveryStatus {
-  PENDING
-  OUT_FOR_DELIVERY
-  DELIVERED
-  CANCELLED
-}
-
-enum ReturnStatus {
-  REQUESTED
-  APPROVED
-  REJECTED
-  REFUNDED
-}
-
+// User model with role-based access control
 model User {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   name      String
   email     String   @unique
-  password  String
-  role      Role[]
+  phone     String?
+  avatar    String?
+  password  String   // Store hashed passwords
+  
+  // Role and status management
+  role      UserRole @default(USER)
+  status    UserStatus @default(PENDING)
+  
+  // Profile information
+  college     String?
+  department  String?
+  year        String?
+  
+  // Approval tracking
+  approvedAt       DateTime?
+  approvedBy       String?
+  rejectionReason  String?
+  suspensionReason String?
+  
+  // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  sellerProfile  SellerProfile?
-  products       Product[]
-  orders         Order[]
-  deliveryOrders DeliveryOrder[]
-  Address        Address[]
-  Cart           Cart[]
-  Wishlist       Wishlist[]
-  Notification   Notification[]
-  Review         Review[]
-  ReturnRequest  ReturnRequest[]
+  
+  // Relations
+  organizedEvents   Event[] @relation("EventOrganizer")
+  registrations     EventRegistration[]
+  formSubmissions   FormSubmission[]
+  approvedUsers     User[] @relation("UserApproval")
+  approver          User?  @relation("UserApproval", fields: [approvedBy], references: [id])
+  
+  @@map("users")
 }
 
-model SellerProfile {
-  id           String       @id @default(uuid())
-  userId       String       @unique
-  businessName String
-  panNumber    String       @unique
-  gstNumber    String?      @unique
-  bankAccount  String
-  status       SellerStatus @default(PENDING)
-
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  products     Product[]
-  sellerOrders SellerOrder[]
-
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  OrderItem      OrderItem[]
-  ProductVariant ProductVariant[]
-}
-
-model Product {
-  id          String @id @default(uuid())
+// Event model with comprehensive event management
+model Event {
+  id          String @id @default(cuid())
   name        String
   description String
-
-  sellerId       String
-  seller         SellerProfile    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
-  status         ProductStatus    @default(PENDING)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  User           User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String?
-  OrderItem      OrderItem[]
-  Cart           Cart[]
-  Wishlist       Wishlist[]
-  Category       Category?        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId     String?
-  ProductVariant ProductVariant[]
-  Review         Review[]
-  ProductImage   ProductImage[]
-}
-
-model ProductVariant {
-  id            String        @id @default(uuid())
-  productId     String
-  product       Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
-  sellerId      String
-  seller        SellerProfile @relation(fields: [sellerId], references: [id], onDelete: Cascade)
-  price         Float
-  stock         Int?
-  isMadeToOrder Boolean       @default(false)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-}
-
-model ProductImage {
-  id        Int     @id @default(autoincrement())
-  productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  url       String
-}
-
-model Review {
-  id        String  @id @default(uuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  rating    Int     @default(5) // 1 se 5 tak rating
-  comment   String?
-
+  
+  // Event timing and location
+  date     String // Store as string for flexibility
+  time     String
+  venue    String
+  city     String
+  state    String
+  address  String?
+  
+  // Event details
+  posterUrl    String?
+  type         EventType @default(COLLEGE)
+  isPaid       Boolean   @default(false)
+  price        Float     @default(0)
+  maxAttendees Int
+  
+  // Event status and features
+  status   EventStatus @default(DRAFT)
+  featured Boolean     @default(false)
+  tags     String[]
+  
+  // Organizer information
+  organizerId String
+  organizer   User   @relation("EventOrganizer", fields: [organizerId], references: [id])
+  
+  // Approval tracking
+  rejectionReason String?
+  
+  // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@unique([userId, productId]) // Ek user ek product par ek hi review likh sakta hai
+  
+  // Relations
+  registrations   EventRegistration[]
+  eventForm       EventForm?
+  formSubmissions FormSubmission[]
+  
+  @@map("events")
 }
 
-
-
-model Category {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+// Event registration model
+model EventRegistration {
+  id           String @id @default(cuid())
+  userId       String
+  eventId      String
+  
+  // Registration details
+  status       RegistrationStatus @default(PENDING)
+  qrCode       String             @unique
+  attendedAt   DateTime?
+  notes        String?
+  
+  // Timestamps
+  registeredAt DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Relations
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+  
+  @@unique([userId, eventId])
+  @@map("event_registrations")
 }
 
-model Order {
-  id            String         @id @default(uuid())
-  buyerId       String
-  buyer         User           @relation(fields: [buyerId], references: [id], onDelete: Cascade)
-  status        OrderStatus    @default(PENDING)
-  totalAmount   Float
-  payment       Payment?
-  orderItems    OrderItem[]
-  sellerOrders  SellerOrder[]
-  deliveryOrder DeliveryOrder?
-
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  ReturnRequest ReturnRequest[]
-}
-
-model OrderItem {
-  id        String        @id @default(uuid())
-  orderId   String
-  order     Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId String
-  product   Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
-  sellerId  String
-  seller    SellerProfile @relation(fields: [sellerId], references: [id], onDelete: Cascade)
-  quantity  Int
-  price     Float
-
+// Dynamic form builder for events
+model EventForm {
+  id      String @id @default(cuid())
+  eventId String @unique
+  fields  Json   // Store form fields as JSON
+  
+  // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  // Relations
+  event       Event            @relation(fields: [eventId], references: [id])
+  submissions FormSubmission[]
+  
+  @@map("event_forms")
 }
 
-model SellerOrder {
-  id       String        @id @default(uuid())
-  sellerId String
-  seller   SellerProfile @relation(fields: [sellerId], references: [id], onDelete: Cascade)
-  orderId  String
-  order    Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  status   OrderStatus   @default(PENDING)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ReturnRequest {
-  id      String       @id @default(uuid())
-  orderId String
-  order   Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  buyerId String
-  buyer   User         @relation(fields: [buyerId], references: [id], onDelete: Cascade)
-  reason  String
-  status  ReturnStatus @default(REQUESTED)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Payment {
-  id      String        @id @default(uuid())
-  orderId String        @unique
-  order   Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  amount  Float
-  status  PaymentStatus @default(PENDING)
-  method  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model DeliveryOrder {
-  id                String @id @default(uuid())
-  orderId           String @unique
-  order             Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  deliveryPartnerId String
-  deliveryPartner   User   @relation(fields: [deliveryPartnerId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Address {
-  id      String @id @default(uuid())
+// Form submissions from users
+model FormSubmission {
+  id      String @id @default(cuid())
+  formId  String
   userId  String
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  address String
-  city    String
-  state   String
-  country String
-  zipCode String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  eventId String
+  data    Json   // Store form data as JSON
+  
+  // Timestamps
+  submittedAt DateTime @default(now())
+  
+  // Relations
+  form  EventForm @relation(fields: [formId], references: [id])
+  user  User      @relation(fields: [userId], references: [id])
+  event Event     @relation(fields: [eventId], references: [id])
+  
+  @@unique([formId, userId])
+  @@map("form_submissions")
 }
 
-model Cart {
-  id        String  @id @default(uuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  quantity  Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId, productId])
+// Enums
+enum UserRole {
+  USER
+  ORGANIZER
+  ADMIN
 }
 
-model Wishlist {
-  id        String  @id @default(uuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([userId, productId]) // prevents duplicates
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
 }
 
-model Notification {
-  id      String  @id @default(uuid())
-  userId  String
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  message String
-  read    Boolean @default(false)
+enum EventType {
+  COLLEGE
+  PRIVATE
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum EventStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+  REJECTED
+}
+
+enum RegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  ATTENDED
 }

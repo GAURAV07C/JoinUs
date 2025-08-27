@@ -1,0 +1,2 @@
+export { eventSchema } from "./eventSchema";
+

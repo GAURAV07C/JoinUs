@@ -6,7 +6,7 @@
   "exports": {
     "./authTypes": "./src/authSchema.ts",
     "./productTypes": "./src/productSchema.ts",
-    "./cartTypes": "./src/cartSchema.ts",
+    "./eventTypes": "./src/eventSchema.ts",
     "./adminTypes": "./src/adminSchema.ts"
   },
   "scripts": {
