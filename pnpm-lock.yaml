@@ -109,6 +109,9 @@ importers:
       '@joinUs/validation':
         specifier: workspace:*
         version: link:../../packages/validation
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^6.15.0
+        version: 6.15.0
       '@radix-ui/react-avatar':
         specifier: ^1.1.10
         version: 1.1.10(@types/react-dom@19.1.1(@types/react@19.1.0))(@types/react@19.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -243,6 +246,9 @@ importers:
       '@prisma/client':
         specifier: ^6.15.0
         version: 6.15.0(prisma@6.15.0(typescript@5.5.4))(typescript@5.5.4)
+      '@prisma/extension-accelerate':
+        specifier: ^2.0.2
+        version: 2.0.2(@prisma/client@6.15.0(prisma@6.15.0(typescript@5.5.4))(typescript@5.5.4))
       ioredis:
         specifier: ^5.6.0
         version: 5.6.0
@@ -1132,11 +1138,20 @@ packages:
   '@prisma/engines@6.15.0':
     resolution: {integrity: sha512-opITiR5ddFJ1N2iqa7mkRlohCZqVSsHhRcc29QXeldMljOf4FSellLT0J5goVb64EzRTKcIDeIsJBgmilNcKxA==}
 
+  '@prisma/extension-accelerate@2.0.2':
+    resolution: {integrity: sha512-yZK6/k7uOEFpEsKoZezQS1CKDboPtBCQ0NyI70e1Un8tDiRgg80iWGyjsJmRpps2ZIut3MroHP+dyR3wVKh8lA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@prisma/client': '>=4.16.1'
+
   '@prisma/fetch-engine@6.15.0':
     resolution: {integrity: sha512-xcT5f6b+OWBq6vTUnRCc7qL+Im570CtwvgSj+0MTSGA1o9UDSKZ/WANvwtiRXdbYWECpyC3CukoG3A04VTAPHw==}
 
   '@prisma/get-platform@6.15.0':
     resolution: {integrity: sha512-Jbb+Xbxyp05NSR1x2epabetHiXvpO8tdN2YNoWoA/ZsbYyxxu/CO/ROBauIFuMXs3Ti+W7N7SJtWsHGaWte9Rg==}
+
+  '@prisma/nextjs-monorepo-workaround-plugin@6.15.0':
+    resolution: {integrity: sha512-07TRktD6NK9MkCCKgOPfweFOqiAmvBsOyda0CYsbGajQv5y3ObVnbNER8OyGEQVkzkk7Ovk2rqOLSM6a+q0vbQ==}
 
   '@radix-ui/number@1.1.1':
     resolution: {integrity: sha512-MkKCwxlXTgz6CFoJx3pCwn07GKp36+aZyu/u2Ln2VrA5DcdyCZkASEDBTd8x5whTQQL5CiYf4prXKLcgQdv29g==}
@@ -5461,6 +5476,10 @@ snapshots:
       '@prisma/fetch-engine': 6.15.0
       '@prisma/get-platform': 6.15.0
 
+  '@prisma/extension-accelerate@2.0.2(@prisma/client@6.15.0(prisma@6.15.0(typescript@5.5.4))(typescript@5.5.4))':
+    dependencies:
+      '@prisma/client': 6.15.0(prisma@6.15.0(typescript@5.5.4))(typescript@5.5.4)
+
   '@prisma/fetch-engine@6.15.0':
     dependencies:
       '@prisma/debug': 6.15.0
@@ -5470,6 +5489,8 @@ snapshots:
   '@prisma/get-platform@6.15.0':
     dependencies:
       '@prisma/debug': 6.15.0
+
+  '@prisma/nextjs-monorepo-workaround-plugin@6.15.0': {}
 
   '@radix-ui/number@1.1.1': {}
 
