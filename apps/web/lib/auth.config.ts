@@ -1,10 +1,34 @@
-import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { loginSchema } from "@/lib/validations";
-import { getUserByEmail, verifyPassword } from "@/lib/auth-service";
+import Github from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 
-const authConfig: NextAuthConfig = {
+import { loginSchema } from "@joinUs/validation/authTypes";
+import { getUserByEmail, verifyPassword } from "@/data/user";
+
+const authConfig = {
   providers: [
+    Github({
+      clientId: process.env.AUTH_GITHUB_ID!,
+      clientSecret: process.env.AUTH_GITHUB_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
+    }),
     Credentials({
       name: "credentials",
       credentials: {
@@ -14,70 +38,38 @@ const authConfig: NextAuthConfig = {
       },
       async authorize(credentials) {
         const validatedFields = loginSchema.safeParse(credentials);
+        if (!validatedFields.success) return null;
 
-        if (validatedFields.success) {
-          const { email, password } = validatedFields.data;
+        const { email, password } = validatedFields.data;
 
-          const user = await getUserByEmail(email);
-          if (!user || !user.password) return null;
+        const user = await getUserByEmail(email);
+        if (!user || !user.password) return null;
 
-          // const passwordsMatch = await verifyPassword(password, user?.password);
+        const passwordsMatch = await verifyPassword(password, user.password);
+        if (!passwordsMatch) return null;
 
-          if (user.status !== "APPROVED") {
-            throw new Error(
-              `Account is ${user.status.toLowerCase()}. Please contact admin.`
-            );
-          }
-
-          return {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            status: user.status,
-            college: user.college,
-            department: user.department,
-            year: user.year,
-            phone: user.phone,
-            avatar: user.avatar,
-          };
+        if (user.status !== "APPROVED") {
+          throw new Error(
+            `Account is ${user.status.toLowerCase()}. Please contact admin.`
+          );
         }
 
-        return null;
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          status: user.status,
+          college: user.college,
+          department: user.department,
+          year: user.year,
+          phone: user.phone,
+          avatar: user.avatar,
+        };
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role;
-        token.status = user.status;
-        token.college = user.college;
-        token.department = user.department;
-        token.year = user.year;
-        token.phone = user.phone;
-        token.avatar = user.avatar;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.user.id = token.sub!;
-        session.user.role = token.role as string;
-        session.user.status = token.status as string;
-        session.user.college = token.college as string;
-        session.user.department = token.department as string;
-        session.user.year = token.year as string;
-        session.user.phone = token.phone as string;
-        session.user.avatar = token.avatar as string;
-      }
-      return session;
-    },
-  },
-  pages: {
-    signIn: "/auth/login",
-  },
+  trustHost: true,
 };
 
 export default authConfig;
-export { authConfig };

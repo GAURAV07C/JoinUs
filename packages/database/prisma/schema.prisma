@@ -19,7 +19,7 @@ model User {
   email     String   @unique
   phone     String?
   avatar    String?
-  password  String   // Store hashed passwords
+  password  String?   // Store hashed passwords
   
   // Role and status management
   role      UserRole @default(USER)

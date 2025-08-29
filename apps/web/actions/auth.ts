@@ -1,96 +1,147 @@
-// "use server"
+"use server";
 
-// import { signIn, signOut } from "@/auth"
-// import { createUser } from "@/lib/auth-service"
-// import { loginSchema, signupSchema } from "@/lib/validations"
-// import { AuthError } from "next-auth"
-// import { redirect } from "next/navigation"
-// import { z } from "zod"
+import { prisma } from "@joinUs/database";
+import bcrypt from "bcryptjs";
+import { signIn, signOut } from "@/lib/auth";
+import { loginSchema, signupSchema } from "@joinUs/validation/authTypes";
+import type { UserRole, UserStatus } from "@/types";
+import { getUserByEmail } from "@/data/user";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 
-// export async function loginAction(prevState: any, formData: FormData) {
-//   const rawData = {
-//     email: formData.get("email"),
-//     password: formData.get("password"),
-//     role: formData.get("role"),
-//   }
+// 🔹 Utility for consistent responses
+function makeResponse<T>(
+  success: boolean,
+  message: string,
+  data?: T,
+  errors?: Record<string, string[]>
+) {
+  return { success, message, data, errors };
+}
 
-//   try {
-//     const validatedData = loginSchema.parse(rawData)
+// -------------------- LOGIN --------------------
+export async function loginAction(values: z.infer<typeof loginSchema>) {
+  try {
+    // Validate inputs
+    const parsed = loginSchema.safeParse(values);
+    if (!parsed.success) {
+      return makeResponse(
+        false,
+        "Invalid fields",
+        undefined,
+        parsed.error.flatten().fieldErrors
+      );
+    }
 
-//     await signIn("credentials", {
-//       email: validatedData.email,
-//       password: validatedData.password,
-//     })
+    const { email, password } = parsed.data;
 
-//     return { success: true, message: "Login successful" }
-//   } catch (error) {
-//     if (error instanceof AuthError) {
-//       switch (error.type) {
-//         case "CredentialsSignin":
-//           return { success: false, message: "Invalid credentials" }
-//         default:
-//           return { success: false, message: "Something went wrong" }
-//       }
-//     }
+    // Check user existence
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser) {
+      return makeResponse(false, "User not found");
+    }
 
-//     if (error instanceof z.ZodError) {
-//       return { success: false, message: "Invalid form data", errors: error.flatten().fieldErrors }
-//     }
+    // Trigger next-auth credentials login
+    await signIn("credentials", { email, password });
 
-//     throw error
-//   }
-// }
+    return makeResponse(true, "Login successful");
+  } catch (error: any) {
+    if (error?.type === "CredentialsSignin") {
+      return makeResponse(false, "Invalid credentials");
+    }
 
-// export async function signupAction(prevState: any, formData: FormData) {
-//   const rawData = {
-//     name: formData.get("name"),
-//     email: formData.get("email"),
-//     phone: formData.get("phone"),
-//     role: formData.get("role"),
-//     college: formData.get("college"),
-//     department: formData.get("department"),
-//     year: formData.get("year"),
-//     password: formData.get("password"),
-//     confirmPassword: formData.get("confirmPassword"),
-//   }
+    console.error("Login error:", error);
+    return makeResponse(false, "Something went wrong");
+  }
+}
 
-//   try {
-//     const validatedData = signupSchema.parse(rawData)
+// -------------------- SIGNUP --------------------
+export async function signupAction(values: z.infer<typeof signupSchema>) {
+  try {
+    // Validate inputs
+    const parsed = signupSchema.safeParse(values);
+    if (!parsed.success) {
+      return makeResponse(
+        false,
+        "Invalid fields",
+        undefined,
+        parsed.error.flatten().fieldErrors
+      );
+    }
 
-//     const user = await createUser({
-//       name: validatedData.name,
-//       email: validatedData.email,
-//       password: validatedData.password,
-//       role: validatedData.role,
-//       college: validatedData.college,
-//       department: validatedData.department,
-//       year: validatedData.year,
-//       phone: validatedData.phone,
-//     })
+    const { name, email, password, role, college, department, year, phone } =
+      parsed.data;
 
-//     // Auto-login admin users
-//     if (user.role === "ADMIN") {
-//       await signIn("credentials", {
-//         email: validatedData.email,
-//         password: validatedData.password,
-//       })
-//     }
+    // Prevent duplicate accounts
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      return makeResponse(false, "Email already in use");
+    }
 
-//     return { success: true, message: "Account created successfully", user }
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       return { success: false, message: error.message }
-//     }
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 12); 
+ 
 
-//     if (error instanceof z.ZodError) {
-//       return { success: false, message: "Invalid form data", errors: error.flatten().fieldErrors }
-//     }
+ // Create new user
 
-//     return { success: false, message: "Something went wrong" }
-//   }
-// }
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role,
+        college,
+        department,
+        year,
+        phone,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatar: true,
+        role: true,
+        status: true,
+        college: true,
+        department: true,
+        year: true,
+        approvedAt: true,
+        approvedBy: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
-// export async function logoutAction() {
-//   await signOut({ redirect: false })
-//   redirect("/")
-// }
+    // Auto-login admin users
+    if (user.role === "ADMIN") {
+      await signIn("credentials", { email, password });
+    }
+
+    return makeResponse(true, "Account created successfully", user);
+  } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      return makeResponse(
+        false,
+        "Invalid form data",
+        undefined,
+       
+      );
+    }
+
+    console.error("Signup error:", error);
+    return makeResponse(false, "Unexpected error occurred");
+  }
+}
+
+// -------------------- LOGOUT --------------------
+export async function logoutAction() {
+  try {
+    await signOut({ redirect: false });
+    redirect("/");
+  } catch (error) {
+    console.error("Logout error:", error);
+    return makeResponse(false, "Failed to logout");
+  }
+}

@@ -23,6 +23,10 @@ export interface User {
 }
 
 export interface Event {
+  maxCapacity: number
+  registrationCount: number
+  imageUrl: string
+  title: string
   id: string
   name: string
   description: string
@@ -40,6 +44,8 @@ export interface Event {
   status: EventStatus
   featured?: boolean
   tags: string[]
+  requirements: string[]
+  category: string
   organizerId: string
   organizer: {
     id: string

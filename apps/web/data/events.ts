@@ -4,8 +4,7 @@ export const events: Event[] = [
   {
     id: "1",
     name: "Tech Fest 2024",
-    description:
-      "Annual technology festival featuring workshops, competitions, and networking opportunities for students and professionals. Join us for an exciting day of innovation, learning, and fun!",
+    description: "Annual technology festival featuring workshops, competitions, and networking opportunities for students and professionals. Join us for an exciting day of innovation, learning, and fun!",
     date: "2025-09-15",
     time: "09:00",
     venue: "Main Auditorium, Tech Campus",
@@ -60,12 +59,15 @@ export const events: Event[] = [
     featured: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "2",
     name: "Cultural Night 2025",
-    description:
-      "A vibrant evening of music, dance, and cultural performances celebrating diversity and creativity. Experience the rich cultural heritage through amazing performances.",
+    description: "A vibrant evening of music, dance, and cultural performances celebrating diversity and creativity. Experience the rich cultural heritage through amazing performances.",
     date: "2025-09-20",
     time: "18:30",
     venue: "Open Air Theatre",
@@ -101,12 +103,15 @@ export const events: Event[] = [
     featured: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "3",
     name: "Startup Pitch Competition",
-    description:
-      "Present your innovative startup ideas to industry experts and win exciting prizes and mentorship opportunities. Network with investors and fellow entrepreneurs.",
+    description: "Present your innovative startup ideas to industry experts and win exciting prizes and mentorship opportunities. Network with investors and fellow entrepreneurs.",
     date: "2025-09-25",
     time: "14:00",
     venue: "Innovation Hub",
@@ -148,12 +153,15 @@ export const events: Event[] = [
     address: "Innovation Hub, Koramangala",
     createdAt: new Date(),
     updatedAt: new Date(),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "4",
     name: "Photography Workshop",
-    description:
-      "Learn professional photography techniques from industry experts. Bring your camera and creativity! Perfect for beginners and intermediates.",
+    description: "Learn professional photography techniques from industry experts. Bring your camera and creativity! Perfect for beginners and intermediates.",
     date: "2025-09-30",
     time: "10:00",
     venue: "Art Studio",
@@ -194,12 +202,15 @@ export const events: Event[] = [
     address: "Fine Arts College, T.Nagar",
     createdAt: new Date(),
     updatedAt: new Date(),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "5",
     name: "Hackathon 2025",
-    description:
-      "48-hour coding marathon to build innovative solutions. Team up with fellow developers and compete for amazing prizes!",
+    description: "48-hour coding marathon to build innovative solutions. Team up with fellow developers and compete for amazing prizes!",
     date: "2025-10-05",
     time: "09:00",
     venue: "Computer Science Building",
@@ -241,12 +252,15 @@ export const events: Event[] = [
     featured: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "6",
     name: "Career Fair 2025",
-    description:
-      "Meet top recruiters and explore career opportunities. Network with industry professionals and land your dream job!",
+    description: "Meet top recruiters and explore career opportunities. Network with industry professionals and land your dream job!",
     date: "2025-10-10",
     time: "10:00",
     venue: "Convention Center",
@@ -282,12 +296,15 @@ export const events: Event[] = [
     address: "HITEC City Convention Center",
     createdAt: new Date(),
     updatedAt: new Date(),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "7",
     name: "AI in Healthcare Workshop",
-    description:
-      "Hands-on workshop exploring AI applications in medical imaging, diagnostics, and patient care. Learn by building mini-projects.",
+    description: "Hands-on workshop exploring AI applications in medical imaging, diagnostics, and patient care. Learn by building mini-projects.",
     date: "2025-09-28",
     time: "11:00",
     venue: "BioTech Lab 2",
@@ -323,12 +340,15 @@ export const events: Event[] = [
     address: "Medical Research Block",
     createdAt: new Date("2025-08-07T10:00:00Z"),
     updatedAt: new Date("2025-08-07T10:00:00Z"),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "8",
     name: "Music Fest: Battle of Bands",
-    description:
-      "An electrifying showdown of the best college bands. Rock, pop, indie and more. Audience voting and special judges!",
+    description: "An electrifying showdown of the best college bands. Rock, pop, indie and more. Audience voting and special judges!",
     date: "2025-10-12",
     time: "17:00",
     venue: "Central Ground",
@@ -357,12 +377,15 @@ export const events: Event[] = [
     featured: true,
     createdAt: new Date("2025-08-08T10:00:00Z"),
     updatedAt: new Date("2025-08-08T10:00:00Z"),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "9",
     name: "Design Bootcamp: UX in a Day",
-    description:
-      "Fast-paced UX design bootcamp covering user research, wireframing, prototyping, and usability testing. Build a portfolio-ready case study.",
+    description: "Fast-paced UX design bootcamp covering user research, wireframing, prototyping, and usability testing. Build a portfolio-ready case study.",
     date: "2025-09-22",
     time: "10:00",
     venue: "Design Studio 1",
@@ -397,12 +420,15 @@ export const events: Event[] = [
     address: "Design Block A",
     createdAt: new Date(),
     updatedAt: new Date(),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
   {
     id: "10",
     name: "Sports Meet 2025",
-    description:
-      "University-level track and field events, team sports tournaments, and fun games. Cheer for your house and win trophies!",
+    description: "University-level track and field events, team sports tournaments, and fun games. Cheer for your house and win trophies!",
     date: "2025-10-20",
     time: "08:00",
     venue: "Sports Complex",
@@ -437,6 +463,10 @@ export const events: Event[] = [
     address: "Sports Complex, Sector B",
     createdAt: new Date(),
     updatedAt: new Date(),
+    maxCapacity: 0,
+    registrationCount: 0,
+    imageUrl: "",
+    title: ""
   },
 ];
 

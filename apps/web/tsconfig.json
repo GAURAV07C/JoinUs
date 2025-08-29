@@ -1,14 +1,11 @@
 {
   "extends": "@joinUs/typescript-config/nextjs.json",
   "compilerOptions": {
+    "declaration": false,
     "baseUrl": "../web",
     "paths": {
-      "@/*": [
-        "../web/*"
-      ],
-      "@joinUs/ui/*": [
-        "../../packages/ui/src/*"
-      ]
+      "@/*": ["../web/*"],
+      "@joinUs/ui/*": ["../../packages/ui/src/*"]
     },
     "plugins": [
       {
@@ -24,7 +21,5 @@
     "../web/next.config.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "../web/node_modules"
-  ]
+  "exclude": ["../web/node_modules"]
 }

@@ -12,7 +12,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { signupAction, loginAction } from "@/actions/auth"
+// import { signupAction, loginAction } from "@/actions/auth"
 
 interface ModernLoginFormProps {
   onSuccess?: () => void
@@ -61,8 +61,8 @@ export function ModernLoginForm({ onSuccess }: ModernLoginFormProps) {
           }
         })
 
-        const result = await loginAction(null, formData)
-        setLoginResult(result)
+        // const result = await loginAction(null, formData)
+        // setLoginResult(result)
       } catch (error) {
         setLoginResult({ success: false, message: "Something went wrong" })
       }
@@ -197,8 +197,8 @@ export function ModernSignupForm({ onSuccess }: ModernSignupFormProps) {
           }
         })
 
-        const result = await signupAction(null, formData)
-        setSignupResult(result)
+        // const result = await signupAction(null, formData)
+        // setSignupResult(result)
       } catch (error) {
         setSignupResult({ success: false, message: "Something went wrong" })
       }

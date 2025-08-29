@@ -1,9 +1,9 @@
-// "use server";
-
-// import { auth } from "@/auth";
-// import { revalidatePath } from "next/cache";
-// import { z } from "zod";
-// import type { EventStatus } from "@/types";
+"use server";
+import { prisma } from "@joinUs/database";
+import { auth } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import type { EventStatus } from "@joinUs/validation/types";
 // import {
 //   getAllEvents,
 //   getEventById,
@@ -12,7 +12,7 @@
 //   deleteEvent,
 // } from "@/lib/events-service";
 
-// import { eventSchema } from "@joinUs/validation/eventTypes";
+import { eventSchema } from "@joinUs/validation/eventTypes";
 
 // export async function getEventsAction() {
 //   try {

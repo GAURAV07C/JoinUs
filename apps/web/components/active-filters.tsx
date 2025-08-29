@@ -1,6 +1,7 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
+
 import { Calendar } from "lucide-react"
 
 interface ActiveFiltersProps {

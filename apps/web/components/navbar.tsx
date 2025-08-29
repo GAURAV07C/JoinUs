@@ -6,6 +6,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSession, signIn, signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-// import { useAuth } from "@/components/auth-provider"
-// import { logout } from "@/lib/auth"
+
 import { toast } from "sonner";
 import {
   Calendar,
@@ -34,16 +34,9 @@ export function Navbar() {
   const pathname = usePathname();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // const { user, setUser } = useAuth()
-  // Mock user data for development
-  const [user, setUser] = useState({
-    id: "1",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    avatar: "/placeholder.svg",
-    role: "ORGANIZER",
-    status: "APPROVED",
-  });
+
+  const { data: session } = useSession();
+  const user = session?.user; // abhi se tumhe user mil jayega
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -74,15 +67,16 @@ export function Navbar() {
     toast.success(isDarkMode ? "Light mode enabled" : "Dark mode enabled");
   };
 
+  function getInitials(name?: string | null) {
+    if (!name) return "U";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("");
+  }
+
   const handleLogout = () => {
-    setUser({
-      id: "",
-      name: "",
-      email: "",
-      avatar: "",
-      role: "",
-      status: "",
-    });
+    signOut(); // ✅ next-auth logout
     toast.success("Logged out successfully!");
     setIsMobileMenuOpen(false);
   };
@@ -90,7 +84,7 @@ export function Navbar() {
   const filteredNavItems = navItems.filter((item) => {
     if (!item.requiresAuth) return true;
     if (!user) return false;
-    if (item.roles && !item.roles.includes(user.role)) return false;
+    if (item.roles && !item.roles.includes(user.role as string)) return false;
     return true;
   });
 
@@ -161,13 +155,10 @@ export function Navbar() {
                   <Avatar className="h-8 w-8">
                     <AvatarImage
                       src={user.avatar || "/placeholder.svg"}
-                      alt={user.name}
+                      alt={user.name || " "}
                     />
                     <AvatarFallback className="bg-gradient-to-r from-violet-500 to-purple-500 text-white text-sm">
-                      {user.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
+                      {getInitials(user?.name)}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -285,13 +276,10 @@ export function Navbar() {
                       <Avatar className="h-10 w-10">
                         <AvatarImage
                           src={user.avatar || "/placeholder.svg"}
-                          alt={user.name}
+                          alt={user.name || " "}
                         />
                         <AvatarFallback className="bg-gradient-to-r from-violet-500 to-purple-500 text-white">
-                          {user.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
+                          {getInitials(user?.name)}
                         </AvatarFallback>
                       </Avatar>
                       <div>

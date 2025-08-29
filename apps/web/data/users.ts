@@ -10,9 +10,6 @@ export const mockUsers: User[] = [
     role: "USER",
     college: "Tech University",
     department: "Computer Science",
-    password: function (password: string, password1: any): unknown {
-      throw new Error("Function not implemented.");
-    },
     status: "PENDING",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -26,9 +23,6 @@ export const mockUsers: User[] = [
     role: "ORGANIZER",
     college: "Tech University",
     department: "Event Management",
-    password: function (password: string, password1: any): unknown {
-      throw new Error("Function not implemented.");
-    },
     status: "PENDING",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -40,9 +34,6 @@ export const mockUsers: User[] = [
     phone: "+1234567892",
     avatar: "/placeholder.svg?height=100&width=100",
     role: "ADMIN",
-    password: function (password: string, password1: any): unknown {
-      throw new Error("Function not implemented.");
-    },
     status: "PENDING",
     createdAt: new Date(),
     updatedAt: new Date(),

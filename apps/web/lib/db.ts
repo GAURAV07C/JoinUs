@@ -1,5 +1,6 @@
 import type { User, Event, Registration } from "@/types";
 import bcrypt from "bcryptjs";
+import { prisma } from "@joinUs/database";
 
 // In-memory database simulation
 const users: User[] = [
