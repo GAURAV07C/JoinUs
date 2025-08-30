@@ -1,7 +1,7 @@
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-
+import { type AuthConfig } from "@auth/core";
 import { loginSchema } from "@joinUs/validation/authTypes";
 import { getUserByEmail, verifyPassword } from "@/data/user";
 

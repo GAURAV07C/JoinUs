@@ -121,7 +121,7 @@ export const useEventsStore = create<EventsState>()(
           (event) =>
             event.title?.toLowerCase().includes(query) ||
             event.description?.toLowerCase().includes(query) ||
-            event.organizerName?.toLowerCase().includes(query) ||
+            event.organizer?.toLowerCase().includes(query) ||
             event.tags?.some((tag) => tag.toLowerCase().includes(query)),
         )
       }

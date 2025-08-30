@@ -62,7 +62,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "2",
@@ -106,7 +108,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "3",
@@ -156,7 +160,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "4",
@@ -205,7 +211,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "5",
@@ -255,7 +263,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "6",
@@ -299,7 +309,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "7",
@@ -343,7 +355,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "8",
@@ -380,7 +394,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "9",
@@ -423,7 +439,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
   {
     id: "10",
@@ -466,7 +484,9 @@ export const events: Event[] = [
     maxCapacity: 0,
     registrationCount: 0,
     imageUrl: "",
-    title: ""
+    title: "",
+    requirements: [],
+    category: ""
   },
 ];
 

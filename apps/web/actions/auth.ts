@@ -56,7 +56,7 @@ export async function loginAction(values: z.infer<typeof loginSchema>) {
 
 
 // -------------------- SIGNUP --------------------
-export async function signupAction(values: z.infer<typeof signupSchema>) {
+export async function signupAction( values: z.infer<typeof signupSchema>) {
   try {
     const parsed = signupSchema.safeParse(values);
    if (!parsed.success) {

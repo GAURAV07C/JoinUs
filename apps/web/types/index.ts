@@ -48,6 +48,7 @@ export interface Event {
   category: string
   organizerId: string
   organizer: {
+    [x: string]: any
     id: string
     name: string
     email: string
