@@ -1,7 +1,7 @@
 import NextAuth, { type NextAuthResult } from "next-auth";
 
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@joinUs/database";
+import { prisma } from "./prisma";
 
 import authConfig from "@/lib/auth.config";
 import { UserRole, UserStatus } from "@joinUs/validation/types";

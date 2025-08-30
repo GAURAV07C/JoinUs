@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model with role-based access control
+model User {
+  id       String  @id @default(cuid())
+  name     String
+  email    String  @unique
+  phone    String?
+  avatar   String?
+  password String? // Store hashed passwords
+
+  // Role and status management
+  role   UserRole   @default(USER)
+  status UserStatus @default(PENDING)
+
+  // Profile information
+  college    String?
+  department String?
+  year       String?
+
+  // Approval tracking
+  approvedAt       DateTime?
+  approvedBy       String?
+  rejectionReason  String?
+  suspensionReason String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  organizedEvents Event[]             @relation("EventOrganizer")
+  registrations   EventRegistration[]
+  formSubmissions FormSubmission[]
+  approvedUsers   User[]              @relation("UserApproval")
+  approver        User?               @relation("UserApproval", fields: [approvedBy], references: [id])
+
+  @@map("users")
+}
+
+// Event model with comprehensive event management
+model Event {
+  id          String @id @default(cuid())
+  name        String
+  description String
+
+  // Event timing and location
+  date    String // Store as string for flexibility
+  time    String
+  venue   String
+  city    String
+  state   String
+  address String?
+
+  // Event details
+  posterUrl    String?
+  type         EventType @default(COLLEGE)
+  isPaid       Boolean   @default(false)
+  price        Float     @default(0)
+  maxAttendees Int
+
+  // Event status and features
+  status   EventStatus @default(DRAFT)
+  featured Boolean     @default(false)
+  tags     String[]
+
+  // Organizer information
+  organizerId String
+  organizer   User   @relation("EventOrganizer", fields: [organizerId], references: [id])
+
+  // Approval tracking
+  rejectionReason String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  registrations   EventRegistration[]
+  eventForm       EventForm?
+  formSubmissions FormSubmission[]
+
+  @@map("events")
+}
+
+// Event registration model
+model EventRegistration {
+  id      String @id @default(cuid())
+  userId  String
+  eventId String
+
+  // Registration details
+  status     RegistrationStatus @default(PENDING)
+  qrCode     String             @unique
+  attendedAt DateTime?
+  notes      String?
+
+  // Timestamps
+  registeredAt DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@unique([userId, eventId])
+  @@map("event_registrations")
+}
+
+// Dynamic form builder for events
+model EventForm {
+  id      String @id @default(cuid())
+  eventId String @unique
+  fields  Json // Store form fields as JSON
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  event       Event            @relation(fields: [eventId], references: [id])
+  submissions FormSubmission[]
+
+  @@map("event_forms")
+}
+
+// Form submissions from users
+model FormSubmission {
+  id      String @id @default(cuid())
+  formId  String
+  userId  String
+  eventId String
+  data    Json // Store form data as JSON
+
+  // Timestamps
+  submittedAt DateTime @default(now())
+
+  // Relations
+  form  EventForm @relation(fields: [formId], references: [id])
+  user  User      @relation(fields: [userId], references: [id])
+  event Event     @relation(fields: [eventId], references: [id])
+
+  @@unique([formId, userId])
+  @@map("form_submissions")
+}
+
+// Enums
+enum UserRole {
+  USER
+  ORGANIZER
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum EventType {
+  COLLEGE
+  PRIVATE
+}
+
+enum EventStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+  REJECTED
+}
+
+enum RegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  ATTENDED
+}
