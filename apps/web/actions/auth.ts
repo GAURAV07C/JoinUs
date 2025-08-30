@@ -26,7 +26,14 @@ export async function loginAction(values: z.infer<typeof loginSchema>) {
      return { success: false, message: "User not found" };
    }
 
-    // Trigger next-auth credentials login
+   const cheakRole = existingUser.role !== role
+
+   if(cheakRole){
+    return { success: false, message: "please select your correct role" };
+
+   }
+
+    // Trigger next-auth credentials login 
      await signIn("credentials", {
        role,
        email,

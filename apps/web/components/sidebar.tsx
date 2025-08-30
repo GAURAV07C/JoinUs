@@ -6,8 +6,9 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useSession,  signOut } from "next-auth/react";
 import { Badge } from "@/components/ui/badge"
-import { useAuth } from "@/components/auth-provider"
+
 import {
   Home,
   Calendar,
@@ -26,6 +27,7 @@ import {
 interface SidebarProps {
   className?: string
 }
+import { toast } from "sonner";
 
 const sidebarVariants = {
   open: {
@@ -64,7 +66,8 @@ const overlayVariants = {
 export function Sidebar({ className }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
-  const { user, logout } = useAuth()
+  const { data: session } = useSession();
+    const user = session?.user; // abhi se tumhe user mil jayega
 
   const toggleSidebar = () => setIsOpen(!isOpen)
 
@@ -134,7 +137,9 @@ export function Sidebar({ className }: SidebarProps) {
   const navigationItems = getNavigationItems()
 
   const handleLogout = () => {
-    logout()
+    toast.success("Logged out successfully!");
+    signOut();
+   
     setIsOpen(false)
   }
 
@@ -157,9 +162,9 @@ export function Sidebar({ className }: SidebarProps) {
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center space-x-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
+              <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user?.name || ""} />
               <AvatarFallback className="bg-gradient-to-r from-sky-500 to-cyan-500 text-white">
-                {user.name.charAt(0)}
+                {user.name?.charAt(0) }
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
@@ -169,10 +174,10 @@ export function Sidebar({ className }: SidebarProps) {
                   variant={user.role === "ADMIN" ? "destructive" : user.role === "ORGANIZER" ? "default" : "secondary"}
                   className="text-xs"
                 >
-                  {user.role.toLowerCase()}
+                  {user?.role?.toLowerCase()}
                 </Badge>
                 <Badge variant={user.status === "APPROVED" ? "default" : "secondary"} className="text-xs">
-                  {user.status.toLowerCase()}
+                  {user.status?.toLowerCase()}
                 </Badge>
               </div>
             </div>
