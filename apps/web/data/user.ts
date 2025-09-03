@@ -1,20 +1,9 @@
-import type { User } from "@/types";
+"use server";
+
+
 import { prisma } from "@joinUs/database";
 import bcrypt from "bcryptjs";
 import type { UserRole, UserStatus } from "@/types";
-export const mockUser: User = {
-  id: "user1",
-  name: "John Doe",
-  email: "john.doe@student.edu",
-  phone: "+1234567890",
-  avatar: "/placeholder.svg?height=100&width=100",
-  role: "ADMIN",
-  status: "PENDING",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-export default mockUser;
 
 export const getUserById = async (id: string) => {
   try {
@@ -51,7 +40,6 @@ export async function verifyPassword(password: string, hashedPassword: string) {
   }
 }
 
-
 export async function getAllUsers() {
   try {
     const users = await prisma.user.findMany({
@@ -81,8 +69,6 @@ export async function getAllUsers() {
     return [];
   }
 }
-
-
 
 export async function updateUserStatus(
   userId: string,

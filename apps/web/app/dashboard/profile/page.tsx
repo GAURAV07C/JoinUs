@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSession,signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -14,10 +15,15 @@ import { toast } from "sonner";
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+   const { data: session } = useSession();
+    const user = session?.user;
+    console.log(user)
+
   const [profileData, setProfileData] = useState({
-    name: "John Doe",
-    email: "john.doe@student.edu",
-    phone: "+1234567890",
+    name: user?.name,
+    email: user?.email,
+    phone: user?.phone,
   });
 
   const handleSave = () => {
@@ -29,6 +35,7 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     setTimeout(() => {
+      signOut();
       toast.success("Logged out successfully!");
     }, 0);
   };
@@ -103,7 +110,7 @@ export default function ProfilePage() {
                 <Label htmlFor="name">Full Name</Label>
                 <Input
                   id="name"
-                  value={profileData.name}
+                  value={profileData.name || ""}
                   onChange={(e) =>
                     setProfileData({ ...profileData, name: e.target.value })
                   }
@@ -115,7 +122,7 @@ export default function ProfilePage() {
                 <Input
                   id="email"
                   type="email"
-                  value={profileData.email}
+                  value={profileData.email || ""}
                   onChange={(e) =>
                     setProfileData({ ...profileData, email: e.target.value })
                   }
@@ -128,7 +135,7 @@ export default function ProfilePage() {
               <Label htmlFor="phone">Phone Number</Label>
               <Input
                 id="phone"
-                value={profileData.phone}
+                value={profileData.phone || ""}
                 onChange={(e) =>
                   setProfileData({ ...profileData, phone: e.target.value })
                 }
@@ -228,9 +235,9 @@ export default function ProfilePage() {
             <Button
               variant="destructive"
               onClick={handleLogout}
-              className="w-full"
+              className="w-full text-black font-bold"
             >
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="mr-2 h-4 w-4 text-black font-bold" />
               Log Out
             </Button>
           </CardContent>

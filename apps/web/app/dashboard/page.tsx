@@ -41,8 +41,8 @@ const itemVariants = {
 };
 
 export default function DashboardPage() {
- const { data: session } = useSession();
-   const user = session?.user; // abhi se tumhe user mil jayega
+  const { data: session } = useSession();
+  const user = session?.user; // abhi se tumhe user mil jayega
 
   if (!user) return null;
 
@@ -500,7 +500,7 @@ function AdminDashboard({ user }: { user: any }) {
                 variant="outline"
                 className="w-full justify-start h-12 bg-transparent"
               >
-                <Link href="/dashboard/admin/users">
+                <Link href="/dashboard/admin/approvals">
                   <Users className="mr-3 h-5 w-5" />
                   Manage Users
                 </Link>
@@ -510,7 +510,7 @@ function AdminDashboard({ user }: { user: any }) {
                 variant="outline"
                 className="w-full justify-start h-12 bg-transparent"
               >
-                <Link href="/dashboard/admin/events">
+                <Link href="/dashboard/admin/event-approvals">
                   <Calendar className="mr-3 h-5 w-5" />
                   Manage Events
                 </Link>

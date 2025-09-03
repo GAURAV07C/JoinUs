@@ -4,23 +4,24 @@ export type EventStatus = "DRAFT" | "PENDING" | "PUBLISHED" | "CANCELLED" | "COM
 export type RegistrationStatus = "PENDING" | "CONFIRMED" | "CANCELLED" | "ATTENDED"
 
 export interface User {
-  id: string
-  name: string
-  email: string
-  phone?: string
-  avatar?: string
-  role: UserRole
-  status: UserStatus
-  college?: string
-  department?: string
-  year?: string
-  createdAt: Date
-  updatedAt: Date
-  approvedAt?: Date
-  approvedBy?: string
-  rejectionReason?: string
-  suspensionReason?: string
+  id: string;
+  name: string;
+  email: string;
+  phone?: string | null; // ✅ allow null
+  avatar?: string | null; // ✅ allow null
+  role: UserRole;
+  status: UserStatus;
+  college?: string | null; // ✅ allow null
+  department?: string | null;
+  year?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  approvedAt?: Date | null;
+  approvedBy?: string | null;
+  rejectionReason?: string | null;
+  suspensionReason?: string | null;
 }
+
 
 export interface Event {
   maxCapacity: number
