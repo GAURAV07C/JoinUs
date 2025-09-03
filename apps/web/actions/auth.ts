@@ -13,46 +13,64 @@ import { z } from "zod";
 // -------------------- LOGIN --------------------
 export async function loginAction(values: z.infer<typeof loginSchema>) {
   try {
-    // Validate inputs
+    // 1. Validate inputs
     const parsed = loginSchema.safeParse(values);
     if (!parsed.success) {
-    return { success: false, message: "Invalid fields", errors: parsed.error.flatten().fieldErrors };
-  }
-    const { email, password,role } = parsed.data;
+      return {
+        success: false,
+        message: "Invalid fields",
+        errors: parsed.error.flatten().fieldErrors,
+      };
+    }
 
-    // Check user existence
+    const { email, password, role } = parsed.data;
+
+    // 2. Find user
     const existingUser = await getUserByEmail(email);
-   if (!existingUser) {
-     return { success: false, message: "User not found" };
-   }
+    if (!existingUser) {
+      return { success: false, message: "User not found" };
+    }
 
-   const cheakRole = existingUser.role !== role
+    if (existingUser.role !== role) {
+      return { success: false, message: "Please select the correct role" };
+    }
 
-   if(cheakRole){
-    return { success: false, message: "please select your correct role" };
+    // 3. Check password
+    if (!existingUser.password) {
+      return { success: false, message: "Password not set for this account" };
+    }
 
-   }
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+    if (!isPasswordCorrect) {
+      return { success: false, message: "Invalid password" };
+    }
 
-    // Trigger next-auth credentials login 
-     await signIn("credentials", {
-       role,
-       email,
-       password,
-       redirect: false,
-       callbackUrl: "/dashboard",
-     });
+    // 4. NextAuth sign in
+    const res = await signIn("credentials", {
+      role,
+      email,
+      password,
+      redirect: false,
+      callbackUrl: "/dashboard",
+    });
 
-
-       return { success: true, message: "Login successful!" };
-  } catch (error: any) {
-   if (error?.type === "CredentialsSignin") {
+    if (res?.error) {
       return { success: false, message: "Invalid credentials!" };
     }
 
+    return {
+      success: true,
+      message: "Login successful!",
+      redirectUrl: res?.url || "/dashboard",
+    };
+  } catch (error) {
     console.error("Login error:", error);
     return { success: false, message: "Something went wrong!" };
   }
-  }
+}
 
 
 // -------------------- SIGNUP --------------------
