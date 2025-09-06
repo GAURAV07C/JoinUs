@@ -1,41 +1,41 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { EventCard } from "@/components/event-card"
-import type { Event } from "@/types"
+import { useState, useEffect } from "react";
+import { EventCard } from "@/components/event-card";
+import type { AppEvent } from "@/types";
 
 interface EventsGridProps {
-  events: Event[]
+  events: AppEvent[];
 }
 
 export function EventsGrid({ events }: EventsGridProps) {
-  const [columns, setColumns] = useState(3)
+  const [columns, setColumns] = useState(3);
 
   useEffect(() => {
     const updateColumns = () => {
       if (window.innerWidth < 768) {
-        setColumns(1)
+        setColumns(1);
       } else if (window.innerWidth < 1024) {
-        setColumns(2)
+        setColumns(2);
       } else {
-        setColumns(3)
+        setColumns(3);
       }
-    }
+    };
 
-    updateColumns()
-    window.addEventListener("resize", updateColumns)
-    return () => window.removeEventListener("resize", updateColumns)
-  }, [])
+    updateColumns();
+    window.addEventListener("resize", updateColumns);
+    return () => window.removeEventListener("resize", updateColumns);
+  }, []);
 
-  const columnEvents = Array.from({ length: columns }, () => [] as Event[])
+  const columnEvents = Array.from({ length: columns }, () => [] as AppEvent[]);
 
   events.forEach((event, index) => {
-    const colIdx = index % columns
+    const colIdx = index % columns;
     if (!columnEvents[colIdx]) {
-      columnEvents[colIdx] = []
+      columnEvents[colIdx] = [];
     }
-    columnEvents[colIdx].push(event)
-  })
+    columnEvents[colIdx].push(event);
+  });
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -56,5 +56,5 @@ export function EventsGrid({ events }: EventsGridProps) {
         </div>
       ))}
     </div>
-  )
+  );
 }

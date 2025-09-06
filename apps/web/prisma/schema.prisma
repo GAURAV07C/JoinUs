@@ -73,6 +73,7 @@ model Event {
   
   // Event status and features
   status   EventStatus @default(DRAFT)
+  reason  String?
   featured Boolean     @default(false)
   tags     String[]
   
@@ -81,7 +82,7 @@ model Event {
   organizer   User   @relation("EventOrganizer", fields: [organizerId], references: [id])
   
   // Approval tracking
-  rejectionReason String?
+  
   
   // Timestamps
   createdAt DateTime @default(now())
@@ -123,7 +124,12 @@ model EventRegistration {
 model EventForm {
   id      String @id @default(cuid())
   eventId String @unique
-  fields  Json   // Store form fields as JSON
+  fields  Json?   // Store form fields as JSON
+  placeholder  String?
+   label       String? 
+  required  Boolean?
+  options String[]
+  
   
   // Timestamps
   createdAt DateTime @default(now())

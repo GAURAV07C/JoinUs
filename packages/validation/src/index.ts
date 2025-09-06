@@ -38,7 +38,6 @@ export interface Event {
   maxCapacity: number;
   registrationCount: number;
   imageUrl: string;
-  title: string;
   id: string;
   name: string;
   description: string;

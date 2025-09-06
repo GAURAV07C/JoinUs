@@ -1,37 +1,37 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { EventCard } from "@/components/event-card"
-import type { Event } from "@/types"
+import { useState, useEffect } from "react";
+import { EventCard } from "@/components/event-card";
+import type { Event } from "@/types";
 
 interface MasonryLayoutProps {
-  events: Event[]
+  events: Event[];
 }
 
 export function MasonryLayout({ events }: MasonryLayoutProps) {
-  const [columns, setColumns] = useState(3)
+  const [columns, setColumns] = useState(3);
 
   useEffect(() => {
     const updateColumns = () => {
       if (window.innerWidth < 768) {
-        setColumns(1)
+        setColumns(1);
       } else if (window.innerWidth < 1024) {
-        setColumns(2)
+        setColumns(2);
       } else {
-        setColumns(3)
+        setColumns(3);
       }
-    }
+    };
 
-    updateColumns()
-    window.addEventListener("resize", updateColumns)
-    return () => window.removeEventListener("resize", updateColumns)
-  }, [])
+    updateColumns();
+    window.addEventListener("resize", updateColumns);
+    return () => window.removeEventListener("resize", updateColumns);
+  }, []);
 
-  const columnEvents = Array.from({ length: columns }, () => [] as Event[])
+  const columnEvents = Array.from({ length: columns }, () => [] as Event[]);
 
   events.forEach((event, index) => {
-    columnEvents[index % columns]?.push(event)
-  })
+    columnEvents[index % columns]?.push(event);
+  });
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -52,5 +52,5 @@ export function MasonryLayout({ events }: MasonryLayoutProps) {
         </div>
       ))}
     </div>
-  )
+  );
 }

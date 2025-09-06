@@ -1,25 +1,28 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { EventCardActions } from "@/components/event-card-actions"
-import { EventBadges } from "@/components/event-badges"
-import { Calendar, Clock, User, Users, Tag } from "lucide-react"
-import type { Event } from "@/types"
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { EventCardActions } from "@/components/event-card-actions";
+import { EventBadges } from "@/components/event-badges";
+import { Calendar, Clock, User, Users, Tag } from "lucide-react";
+import type { Event } from "@/types";
 
 interface EventCardProps {
-  event: Event
-  index?: number
+  event: Event;
+  index?: number;
 }
 
-export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElement | null {
+export function EventCard({
+  event,
+  index = 0,
+}: EventCardProps): React.ReactElement | null {
   if (!event) {
-    return null
+    return null;
   }
 
   const formatDate = (dateString: string) => {
@@ -27,20 +30,22 @@ export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElem
       month: "short",
       day: "numeric",
       year: "numeric",
-    })
-  }
+    });
+  };
 
   const formatTime = (timeString: string) => {
     return new Date(`2000-01-01T${timeString}`).toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
-    })
-  }
+    });
+  };
 
-  const maxCapacity = event.maxCapacity || 0
-  const currentAttendees = event.registrationCount || 0
-  const attendancePercentage = maxCapacity ? (currentAttendees / maxCapacity) * 100 : 0
+  const maxCapacity = event.maxAttendees || 0;
+  const currentAttendees = event.price || 0;
+  const attendancePercentage = maxCapacity
+    ? (currentAttendees / maxCapacity) * 100
+    : 0;
 
   return (
     <motion.div
@@ -57,8 +62,8 @@ export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElem
       <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-500 border-0 shadow-lg bg-white/90 backdrop-blur-sm h-full flex flex-col">
         <div className="relative aspect-video overflow-hidden">
           <Image
-            src={event.imageUrl || "/placeholder.svg"}
-            alt={event.title || "Event"}
+            src={event.city || "/placeholder.svg"}
+            alt={event.name || "Event"}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
@@ -66,8 +71,14 @@ export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElem
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
 
-          <EventBadges event={event} attendancePercentage={attendancePercentage} />
-          <EventCardActions eventId={event.id} eventName={event.title || "Event"} />
+          <EventBadges
+            event={event}
+            attendancePercentage={attendancePercentage}
+          />
+          <EventCardActions
+            eventId={event.id}
+            eventName={event.name || "Event"}
+          />
 
           {/* Bottom overlay info */}
           <div className="absolute bottom-4 left-4 right-20">
@@ -88,7 +99,7 @@ export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElem
           <div className="space-y-4">
             <div>
               <h3 className="font-bold text-xl mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors duration-300">
-                {event.title || "Untitled Event"}
+                {event.name || "Untitled Event"}
               </h3>
 
               <div className="flex items-center gap-2 text-sm text-slate-600 mb-3">
@@ -96,8 +107,14 @@ export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElem
                   <User className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <span className="font-medium">{event.organizer?.name || "Unknown Organizer"}</span>
-                  {event.organizer?.college && <div className="text-xs text-slate-500">{event.organizer.college}</div>}
+                  <span className="font-medium">
+                    {event.organizer?.name || "Unknown Organizer"}
+                  </span>
+                  {event.organizer?.college && (
+                    <div className="text-xs text-slate-500">
+                      {event.organizer.college}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -119,7 +136,10 @@ export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElem
                 </Badge>
               ))}
               {(event.tags || []).length > 3 && (
-                <Badge variant="outline" className="text-xs bg-slate-50 text-slate-600 border-slate-200">
+                <Badge
+                  variant="outline"
+                  className="text-xs bg-slate-50 text-slate-600 border-slate-200"
+                >
                   +{(event.tags || []).length - 3}
                 </Badge>
               )}
@@ -137,7 +157,10 @@ export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElem
                     </span>
                   </div>
                 </div>
-                <Progress value={attendancePercentage} className="h-2 bg-slate-200" />
+                <Progress
+                  value={attendancePercentage}
+                  className="h-2 bg-slate-200"
+                />
               </div>
             )}
           </div>
@@ -163,5 +186,5 @@ export function EventCard({ event, index = 0 }: EventCardProps): React.ReactElem
         </CardFooter>
       </Card>
     </motion.div>
-  )
+  );
 }

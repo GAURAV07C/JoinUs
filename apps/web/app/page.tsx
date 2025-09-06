@@ -5,20 +5,21 @@ import { PageLayout } from "@/components/page-layout";
 import { ErrorState } from "@/components/error-state";
 import { HeroSection } from "@/components/hero-section";
 import { WhyJoinUsSection } from "@/components/why-joinus-section";
-// import { EventsSection } from "@/components/events-section";
-// import { useEvents } from "@/hooks/use-events";
-// import type { Event } from "@/types";
+import { EventsSection } from "@/components/events-section";
+import { useEvents } from "@/hooks/use-events";
 
-import type { FC } from "react";
+import type { Event } from "@/types";
 
 export default function HomePage() {
-  // const { data: events, isLoading, error } = useEvents();
+  const { data: events, isLoading, error } = useEvents();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [paidFilter, setPaidFilter] = useState<string>("all");
   const [locationFilter, setLocationFilter] = useState<string>("all");
   const [dateFilter, setDateFilter] = useState<Date | undefined>();
+
+  console.log("events", events);
 
   // Debounce search query
   useEffect(() => {
@@ -28,62 +29,66 @@ export default function HomePage() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // const filteredEvents = useMemo(() => {
-  //   if (!events || !Array.isArray(events)) return [];
+  const filteredEvents = useMemo(() => {
+    if (!events || !Array.isArray(events)) return [];
+    console.log("Events ", events);
 
-  //   return events.filter((event: Event) => {
-  //     const searchTerm = debouncedSearch.toLowerCase();
-  //     const matchesSearch =
-  //       !searchTerm ||
-  //       (event.title && event.title.toLowerCase().includes(searchTerm)) ||
-  //       (event.description &&
-  //         event.description.toLowerCase().includes(searchTerm)) ||
-  //       (event.tags &&
-  //         Array.isArray(event.tags) &&
-  //         event.tags.some(
-  //           (tag) => tag && tag.toLowerCase().includes(searchTerm)
-  //         )) ||
-  //       (event.organizerName &&
-  //         event.organizerName.toLowerCase().includes(searchTerm));
+    return events.filter((event: Event) => {
+      // Safely handle search matching
+      const searchTerm = debouncedSearch.toLowerCase();
+      const matchesSearch =
+        !searchTerm ||
+        (event.name && event.name.toLowerCase().includes(searchTerm)) ||
+        (event.description &&
+          event.description.toLowerCase().includes(searchTerm)) ||
+        (event.tags &&
+          Array.isArray(event.tags) &&
+          event.tags.some(
+            (tag) => tag && tag.toLowerCase().includes(searchTerm)
+          )) ||
+        (event.organizer &&
+          event.organizer.name &&
+          event.organizer.name.toLowerCase().includes(searchTerm));
 
-  //     const matchesType = typeFilter === "all" || event.category === typeFilter;
-  //     const matchesPaid =
-  //       paidFilter === "all" ||
-  //       (paidFilter === "free" && event.price === 0) ||
-  //       (paidFilter === "paid" && event.price > 0);
+      const matchesType = typeFilter === "all" || event.type === typeFilter;
+      const matchesPaid =
+        paidFilter === "all" ||
+        (paidFilter === "free" && !event.isPaid) ||
+        (paidFilter === "paid" && event.isPaid);
 
-  //     const matchesLocation =
-  //       locationFilter === "all" ||
-  //       (event.venue && event.venue.includes(locationFilter));
+      const matchesLocation =
+        locationFilter === "all" ||
+        (event.city &&
+          event.city.toLowerCase() === locationFilter.toLowerCase());
 
-  //     const matchesDate =
-  //       !dateFilter ||
-  //       (event.date &&
-  //         new Date(event.date).toDateString() === dateFilter.toDateString());
+      const matchesDate =
+        !dateFilter ||
+        (event.date &&
+          new Date(event.date).toDateString() === dateFilter.toDateString());
 
-  //     return (
-  //       matchesSearch &&
-  //       matchesType &&
-  //       matchesPaid &&
-  //       matchesLocation &&
-  //       matchesDate
-  //     );
-  //   });
-  // }, [
-  //   events,
-  //   debouncedSearch,
-  //   typeFilter,
-  //   paidFilter,
-  //   locationFilter,
-  //   dateFilter,
-  // ]);
+      return (
+        matchesSearch &&
+        matchesType &&
+        matchesPaid &&
+        matchesLocation &&
+        matchesDate
+      );
+    });
+  }, [
+    events,
+    debouncedSearch,
+    typeFilter,
+    paidFilter,
+    locationFilter,
+    dateFilter,
+  ]);
 
-  // const cities = useMemo(() => {
-  //   if (!events || !Array.isArray(events)) return [];
-  //   return Array.from(
-  //     new Set(events.map((event) => event.venue?.split(",")[0]).filter(Boolean))
-  //   );
-  // }, [events]);
+  const cities = useMemo(() => {
+    if (!events || !Array.isArray(events)) return [];
+    return Array.from(
+      new Set(events.map((event) => event.city).filter(Boolean))
+    );
+  }, [events]);
 
   const clearAllFilters = () => {
     setTypeFilter("all");
@@ -93,23 +98,24 @@ export default function HomePage() {
     setSearchQuery("");
   };
 
-  const hasActiveFilters =
+  const hasActiveFilters = Boolean(
     typeFilter !== "all" ||
-    paidFilter !== "all" ||
-    locationFilter !== "all" ||
-    !!dateFilter ||
-    !!searchQuery;
+      paidFilter !== "all" ||
+      locationFilter !== "all" ||
+      dateFilter ||
+      searchQuery
+  );
 
-  // if (error) {
-  //   return <ErrorState />;
-  // }
+  if (error) {
+    return <ErrorState />;
+  }
 
   return (
     <PageLayout>
       {/* Hero Section */}
       <HeroSection />
 
-      {/* <EventsSection
+      <EventsSection
         events={events}
         isLoading={isLoading}
         searchQuery={searchQuery}
@@ -127,7 +133,7 @@ export default function HomePage() {
         onLocationChange={setLocationFilter}
         onDateChange={setDateFilter}
         onClearAllFilters={clearAllFilters}
-      /> */}
+      />
 
       {/* Why JoinUs Section */}
       <WhyJoinUsSection />

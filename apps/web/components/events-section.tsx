@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { SearchBar } from "@/components/search-bar"
-import { FilterControls } from "@/components/filter-controls"
-import { ActiveFilters } from "@/components/active-filters"
-import { EventsGrid } from "@/components/events-grid"
-import { EmptyEventsState } from "@/components/empty-events-state"
-import { EventsLoading } from "@/components/events-loading"
-import type { Event } from "@/types"
+import { motion } from "framer-motion";
+import { SearchBar } from "@/components/search-bar";
+import { FilterControls } from "@/components/filter-controls";
+import { ActiveFilters } from "@/components/active-filters";
+import { EventsGrid } from "@/components/events-grid";
+import { EmptyEventsState } from "@/components/empty-events-state";
+import { EventsLoading } from "@/components/events-loading";
+import type { Event } from "@/types";
 
 interface EventsSectionProps {
-  events: Event[] | undefined
-  isLoading: boolean
-  searchQuery: string
-  debouncedSearch: string
-  typeFilter: string
-  paidFilter: string
-  locationFilter: string
-  dateFilter: Date | undefined
-  filteredEvents: Event[]
-  cities: string[]
-  hasActiveFilters: boolean
-  onSearchChange: (query: string) => void
-  onTypeChange: (value: string) => void
-  onPaidChange: (value: string) => void
-  onLocationChange: (value: string) => void
-  onDateChange: (date: Date | undefined) => void
-  onClearAllFilters: () => void
+  events: Event[] | undefined;
+  isLoading: boolean;
+  searchQuery: string;
+  debouncedSearch: string;
+  typeFilter: string;
+  paidFilter: string;
+  locationFilter: string;
+  dateFilter: Date | undefined;
+  filteredEvents: Event[];
+  cities: string[];
+  hasActiveFilters: boolean;
+  onSearchChange: (query: string) => void;
+  onTypeChange: (value: string) => void;
+  onPaidChange: (value: string) => void;
+  onLocationChange: (value: string) => void;
+  onDateChange: (date: Date | undefined) => void;
+  onClearAllFilters: () => void;
 }
 
 export function EventsSection({
@@ -78,7 +78,10 @@ export function EventsSection({
           viewport={{ once: true }}
         >
           {/* Search Bar */}
-          <SearchBar searchQuery={searchQuery} onSearchChange={onSearchChange} />
+          <SearchBar
+            searchQuery={searchQuery}
+            onSearchChange={onSearchChange}
+          />
 
           {/* Filters */}
           <FilterControls
@@ -112,9 +115,12 @@ export function EventsSection({
         ) : filteredEvents && filteredEvents.length > 0 ? (
           <EventsGrid events={filteredEvents} />
         ) : (
-          <EmptyEventsState hasActiveFilters={hasActiveFilters} onClearFilters={onClearAllFilters} />
+          <EmptyEventsState
+            hasActiveFilters={hasActiveFilters}
+            onClearFilters={onClearAllFilters}
+          />
         )}
       </div>
     </section>
-  )
+  );
 }
