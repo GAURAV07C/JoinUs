@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 
 import { useState } from "react"
 import { toast } from "sonner"
-import type { FormField as EventFormField } from "@/types"
+import type { EventForm as EventFormField } from "@/types";
 import { createEventAction } from "@/lib/events"
 
 const eventSchema = z.object({

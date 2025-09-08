@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { EventCard } from "@/components/event-card";
-import type { AppEvent } from "@/types";
+import type { Event } from "@/types";
 
 interface EventsGridProps {
-  events: AppEvent[];
+  events: Event[];
 }
 
 export function EventsGrid({ events }: EventsGridProps) {
@@ -27,7 +27,7 @@ export function EventsGrid({ events }: EventsGridProps) {
     return () => window.removeEventListener("resize", updateColumns);
   }, []);
 
-  const columnEvents = Array.from({ length: columns }, () => [] as AppEvent[]);
+  const columnEvents = Array.from({ length: columns }, () => [] as Event[]);
 
   events.forEach((event, index) => {
     const colIdx = index % columns;

@@ -62,7 +62,7 @@ export function EventCard({
       <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-500 border-0 shadow-lg bg-white/90 backdrop-blur-sm h-full flex flex-col">
         <div className="relative aspect-video overflow-hidden">
           <Image
-            src={event.city || "/placeholder.svg"}
+            src={"/placeholder.svg"}
             alt={event.name || "Event"}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-700"

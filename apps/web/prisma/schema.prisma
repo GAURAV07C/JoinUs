@@ -127,7 +127,7 @@ model EventForm {
   fields  Json?   // Store form fields as JSON
   placeholder  String?
    label       String? 
-  required  Boolean?
+  required  Boolean? 
   options String[]
   
   

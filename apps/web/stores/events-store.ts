@@ -128,16 +128,16 @@ export const useEventsStore = create<EventsState>()(
         const query = searchQuery.toLowerCase();
         filtered = filtered.filter(
           (event) =>
-            event.title?.toLowerCase().includes(query) ||
+            event.name?.toLowerCase().includes(query) ||
             event.description?.toLowerCase().includes(query) ||
-            event.organizer?.toLowerCase().includes(query) ||
+            event.organizer.name?.toLocaleLowerCase().includes(query) ||
             event.tags?.some((tag) => tag.toLowerCase().includes(query))
         );
       }
 
       // Apply type filter
       if (typeFilter !== "all") {
-        filtered = filtered.filter((event) => event.category === typeFilter);
+        filtered = filtered.filter((event) => event.type === typeFilter);
       }
 
       // Apply paid filter

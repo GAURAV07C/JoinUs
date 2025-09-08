@@ -22,7 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { Plus, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
-import {useCreateEvent} from "@/hooks/use-events"
+import { useCreateEvent } from "@/hooks/use-events";
 
 type EventForm = {
   id: string;
@@ -49,7 +49,6 @@ export default function CreateEventPage() {
     isPaid: false,
     price: 0,
   });
-
 
   const [formFields, setFormFields] = useState<EventForm[]>([
     {
@@ -88,12 +87,12 @@ export default function CreateEventPage() {
       formData.append("requirements", JSON.stringify(formFields ?? []));
       formData.append("city", eventData.city);
       formData.append("state", eventData.state);
-      formData.append("maxCapacity", String(eventData.maxAttendees));
+      formData.append("maxAttendees", String(eventData.maxAttendees));
       formData.append("category", eventData.type);
 
       console.log("Submitting event data:", Object.fromEntries(formData));
 
-      await createEvent(formData);
+      // await createEvent(formData);
 
       router.push("/dashboard/my-events");
     } catch (error) {
@@ -283,8 +282,9 @@ export default function CreateEventPage() {
               <div className="space-y-2">
                 <Label htmlFor="capacity">Max Attendees *</Label>
                 <Input
-                  id="capacity"
+                  id="maxAttendees"
                   type="number"
+                  name="maxAttendees"
                   value={eventData.maxAttendees ?? ""}
                   onChange={(e) =>
                     setEventData({
@@ -317,7 +317,6 @@ export default function CreateEventPage() {
                   >
                     Choose File
                   </Button>
-                  
                 </div>
               </div>
             </div>
@@ -367,16 +366,16 @@ export default function CreateEventPage() {
         </Card>
 
         {/* Registration Form Builder */}
-        <Card>
-          <CardHeader>
+        {/* <Card> */}
+          {/* <CardHeader>
             <CardTitle>Registration Form</CardTitle>
             <p className="text-sm text-muted-foreground">
               Customize the registration form for your event
             </p>
-          </CardHeader>
-          <CardContent className="space-y-6">
+          // </CardHeader> */}
+          {/* // <CardContent className="space-y-6"> */}
             {/* Existing Fields */}
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
               <h4 className="font-medium">Form Fields</h4>
               {formFields.map((field, index) => (
                 <div
@@ -406,12 +405,12 @@ export default function CreateEventPage() {
                   )}
                 </div>
               ))}
-            </div>
+            </div> */}
 
-            <Separator />
+            {/* <Separator /> */}
 
             {/* Add New Field */}
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
               <h4 className="font-medium">Add New Field</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -498,16 +497,14 @@ export default function CreateEventPage() {
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Submit */}
         <div className="flex gap-4">
           <Button type="submit" disabled={isLoading} className="flex-1">
-            {isLoading ? "Creating Event..." : "Create Event"}
+            {isLoading ? "drafting Event.." : "Draft Event"}
           </Button>
-          <Button type="button" variant="outline">
-            Save as Draft
-          </Button>
+
         </div>
       </form>
     </div>

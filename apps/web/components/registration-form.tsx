@@ -49,21 +49,15 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
   const handleSubmit = async (data: SignupData) => {
     setIsLoading(true);
     try {
-      const formData = new FormData();
-      
-      // Append all form data to FormData
-      Object.entries(data).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          formData.append(key, value.toString());
-        }
-      });
+      const result = await signupAction(data);
 
-      if (eventId) {
-        formData.append("eventId", eventId);
+      if (result.success) {
+        toast.success(result.message);
+        // Optionally reset the form or redirect
+        form.reset();
+      } else {
+        toast.error(result.message);
       }
-
-      await signupAction(formData);
-      toast.success("Registration successful! Please check your email for confirmation.");
     } catch (error) {
       console.error("Registration error:", error);
       toast.error("Registration failed. Please try again.");

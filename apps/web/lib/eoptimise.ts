@@ -45,12 +45,14 @@ export async function getEventById(id: string) {
     });
 
     if (!event) return null;
+    console.log("Raw event from DB:", event);
 
     return {
       ...event,
       status: event.status as EventStatus,
       currentAttendees: event.registrations.length,
     };
+    
   } catch (error) {
     console.error("Error fetching event by ID:", error);
     return null;

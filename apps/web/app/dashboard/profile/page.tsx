@@ -18,7 +18,7 @@ export default function ProfilePage() {
 
    const { data: session } = useSession();
     const user = session?.user;
-    console.log(user)
+ 
 
   const [profileData, setProfileData] = useState({
     name: user?.name,

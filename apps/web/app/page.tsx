@@ -19,7 +19,7 @@ export default function HomePage() {
   const [locationFilter, setLocationFilter] = useState<string>("all");
   const [dateFilter, setDateFilter] = useState<Date | undefined>();
 
-  console.log("events", events);
+ 
 
   // Debounce search query
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function HomePage() {
 
   const filteredEvents = useMemo(() => {
     if (!events || !Array.isArray(events)) return [];
-    console.log("Events ", events);
+  
 
     return events.filter((event: Event) => {
       // Safely handle search matching

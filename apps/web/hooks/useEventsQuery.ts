@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getEventById  } from "@/lib/eoptimise";
-import { getEventsAction } from "@/actions/events";
+
+import { getEventByIdAction, getEventsAction } from "@/actions/events";
+import { getUserRegistrationsAction } from "@/actions/registrations";
 
 // Using any to avoid type mismatch with multiple event shapes in codebase
 
@@ -44,7 +45,9 @@ export function useEventQuery(id: string) {
   const fetchEvent = async () => {
     try {
       setIsLoading(true);
-      const event = await getEventById(id);
+      const event = await getEventByIdAction(id);
+      console.log("ev", event);
+
       setData(event);
       setError(null);
     } catch (err) {
@@ -71,9 +74,13 @@ export function useUserRegistrationsQuery(userId: string) {
   const fetchRegistrations = async () => {
     try {
       setIsLoading(true);
-      // const regs = await getUserRegistrations(userId)
-      // setData(regs)
-      setError(null);
+      const result = await getUserRegistrationsAction();
+      if (result.success) {
+        setData(result.registrations || []);
+        setError(null);
+      } else {
+        setError(result.message ?? "Failed to fetch registrations");
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to fetch registrations"

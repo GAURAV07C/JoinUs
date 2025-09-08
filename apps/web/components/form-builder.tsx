@@ -25,7 +25,7 @@ interface FormBuilderProps {
   isLoading?: boolean
 }
 
-export function FormBuilder({ fields, onSubmit, isLoading = false }: FormBuilderProps) {
+export function FormBuilder({ fields=[], onSubmit, isLoading = false }: FormBuilderProps) {
   const [formData, setFormData] = useState<Record<string, any>>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -40,6 +40,8 @@ export function FormBuilder({ fields, onSubmit, isLoading = false }: FormBuilder
         newErrors[field.id] = `${field.label} is required`
       }
     })
+
+    console.log("f",fields)
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)

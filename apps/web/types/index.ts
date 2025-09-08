@@ -91,9 +91,7 @@ export interface Event {
 }
 
 export interface EventRegistration {
-  id: string;
-  userId: string;
-  eventId: string;
+
   status: RegistrationStatus;
   qrCode: string;
   attendedAt?: Date;
@@ -107,16 +105,14 @@ export interface EventRegistration {
 }
 
 export interface EventForm {
-  id: string;
-
-  eventId: string;
-  label: string;
+ 
+  label: string | null;
   fields: any; // JSON type
-  placeholder?: string;
-  required?: boolean;
+  placeholder?: string | null;
+  required?: boolean | null;
   options?: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  
+
 
   // Relations
   event?: Event;

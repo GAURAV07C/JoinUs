@@ -19,7 +19,7 @@ import { getAllEvents } from "@/lib/eoptimise";
 export async function getEventsAction() {
   try {
     const events = await getAllEvents();
-    console.log("a Events",events);
+    
     return { success: true, events };
   } catch (error) {
     return { success: false, message: "Failed to fetch events" };

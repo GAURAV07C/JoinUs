@@ -24,11 +24,12 @@ import {
 export default function EventDetailsPage() {
   const params = useParams();
   const eventId = params.id as string;
+  
   const { data: event, isLoading, error } = useEventQuery(eventId);
   const { data: allEvents } = useEventsQuery();
   const [showStickyButton, setShowStickyButton] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
-
+console.log('event id',event)
   // Handle sticky button visibility
   useEffect(() => {
     const handleScroll = () => {
@@ -121,7 +122,7 @@ export default function EventDetailsPage() {
       ?.filter(
         (e) =>
           e.id !== event.id &&
-          (e.type === event.type || e.location.city === event.location.city)
+          (e.type === event.type || e.city === event.city)
       )
       .slice(0, 3) || [];
 
@@ -130,8 +131,8 @@ export default function EventDetailsPage() {
       {/* Hero Banner */}
       <div className="relative aspect-video w-full">
         <Image
-          src={event.posterUrl || "/placeholder.svg"}
-          alt={event.name}
+          src={event?.posterUrl || "/placeholder.svg"}
+          alt={event?.name || "Event poster"}
           fill
           className="object-cover"
         />
@@ -238,7 +239,7 @@ export default function EventDetailsPage() {
                       <div>
                         <p className="font-medium">{event.venue}</p>
                         <p className="text-sm text-muted-foreground">
-                          {event.location.city}, {event.location.state}
+                          {event.city}, {event.state}
                         </p>
                       </div>
                     </div>
@@ -269,8 +270,8 @@ export default function EventDetailsPage() {
                 </p>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-6">
-                  {event.tags.map((tag) => (
+                {/* <div className="flex flex-wrap gap-2 mt-6">
+                  {event.tags.map((tag: string) => (
                     <Badge
                       key={tag}
                       variant="outline"
@@ -279,7 +280,7 @@ export default function EventDetailsPage() {
                       {tag}
                     </Badge>
                   ))}
-                </div>
+                </div> */}
               </CardContent>
             </Card>
 
@@ -295,16 +296,16 @@ export default function EventDetailsPage() {
                   </div>
                   <div className="flex-1">
                     <p className="font-semibold text-lg">
-                      {event.organizer.name}
+                      {event.organizer?.name}
                     </p>
-                    {event.organizer.college && (
+                    {event.organizer?.college && (
                       <p className="text-muted-foreground">
-                        {event.organizer.college}
+                        {event.organizer?.college}
                       </p>
                     )}
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
                       <Mail className="h-4 w-4" />
-                      <span>{event.organizer.email}</span>
+                      <span>{event.organizer?.email}</span>
                     </div>
                   </div>
                   <Button variant="outline">Contact</Button>
@@ -349,7 +350,7 @@ export default function EventDetailsPage() {
                 )}
 
                 <Button asChild className="w-full" size="lg">
-                  <Link href={`/event/${event.id}/register`}>
+                  <Link href={`/event/${eventId}/register`}>
                     Register Now
                     {event.isPaid && (
                       <span className="ml-2">• ₹{event.price}</span>
@@ -366,7 +367,7 @@ export default function EventDetailsPage() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  {event.formFields.map((field) => (
+                  {event.formFields?.map((field: any) => (
                     <li
                       key={field.id}
                       className="flex items-center gap-3 text-sm"

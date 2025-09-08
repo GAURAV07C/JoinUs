@@ -58,11 +58,23 @@ export async function getAllEvents() {
 
 export async function getEventById(id: string) {
   try {
-    const event = await prisma.event.findUnique({ where: { id } });
+    const event = await prisma.event.findUnique({
+      where: { id },
+      include: {
+       eventForm:true,
+       registrations:true,
+       formSubmissions:true,
+       organizer:true,
+      },
+    });
     if (!event) return null;
 
     const registrations = await prisma.eventRegistration.findMany({
       where: { eventId: id },
+      include:{
+        event:true,
+        user:true
+      }
     });
     const registrationCount = registrations.length;
 
@@ -84,7 +96,11 @@ export async function getEventById(id: string) {
       status: event.status as EventStatus,
       featured: event.featured,
       tags: event.tags,
+      eventForm: event.eventForm,
+      registrations:event.organizer,
+      organizer :event.organizer,
       organizerId: event.organizerId,
+      formSubmissions:event.formSubmissions,
       currentAttendees: registrationCount,
       rejectionReason: event.reason,
       createdAt: event.createdAt,

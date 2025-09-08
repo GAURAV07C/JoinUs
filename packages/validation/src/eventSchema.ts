@@ -15,7 +15,7 @@ export const eventSchema = z.object({
   requirements: z.array(z.object({
     id: z.string(),
     label: z.string(),
-    fields: z.enum(["text", "email", "dropdown", "file"]),
+    type: z.enum(["text", "email", "dropdown", "file"]),
     required: z.boolean(),
     options: z.array(z.string()).optional(),
   })).optional(),

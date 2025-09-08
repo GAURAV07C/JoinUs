@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import {
  
   getEventByIdAction,
-  createEventAction,
+  // createEventAction,
   updateEventAction,
   updateEventStatusAction,
   deleteEventAction,
@@ -11,6 +11,7 @@ import {
 import { useEventsStore } from "@/stores/events-store"
 import { toast } from "sonner"
 import { EventStatus } from "@/types"
+import { createEventAction } from "@/actions/test"
 
 export const EVENTS_QUERY_KEY = "events"
 
@@ -65,6 +66,8 @@ export function useCreateEvent() {
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
+      // const result = await createEventAction(formData)
+
       const result = await createEventAction(formData)
 
       if (!result.success) {

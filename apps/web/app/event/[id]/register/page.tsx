@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -20,11 +20,17 @@ export default function EventRegistrationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitProgress, setSubmitProgress] = useState(0);
 
+  useEffect(() => {
+    if (event) {
+      console.log("red ev", event);
+      console.log("reg events", event.eventForm?.fields);
+    }
+  }, [event]);
+
   const handleSubmit = async (formData: Record<string, any>) => {
     setIsSubmitting(true);
     setSubmitProgress(0);
 
-    // Simulate progress steps
     const steps = [
       { progress: 25, text: "Validating information" },
       { progress: 50, text: "Processing registration" },
@@ -37,7 +43,6 @@ export default function EventRegistrationPage() {
       setSubmitProgress(step.progress);
     }
 
-    // Final delay before redirect
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     setIsSubmitting(false);
@@ -65,18 +70,18 @@ export default function EventRegistrationPage() {
     );
   }
 
-  if (error || !event) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <p className="text-destructive">Event not found.</p>
-          <Button asChild className="mt-4">
-            <Link href="/">Back to Events</Link>
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  // if (error || !event) {
+  //   return (
+  //     <div className="container mx-auto px-4 py-8">
+  //       <div className="text-center">
+  //         <p className="text-destructive">Event not found.</p>
+  //         <Button asChild className="mt-4">
+  //           <Link href="/">Back to Events</Link>
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (isSubmitting) {
     return (
@@ -138,11 +143,17 @@ export default function EventRegistrationPage() {
               )}
             </CardHeader>
             <CardContent className="p-8">
-              <FormBuilder
-                fields={event.formFields}
-                onSubmit={handleSubmit}
-                isLoading={isSubmitting}
-              />
+              {event.eventForm?.fields && event.eventForm.fields.length > 0 ? (
+                <FormBuilder
+                  fields={event.eventForm.fields}
+                  onSubmit={handleSubmit}
+                  isLoading={isSubmitting}
+                />
+              ) : (
+                <p className="text-center text-gray-500">
+                  ⚠️ No registration fields available.
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
