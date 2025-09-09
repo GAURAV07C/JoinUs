@@ -20,12 +20,16 @@ export default function EventRegistrationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitProgress, setSubmitProgress] = useState(0);
 
+  const [formFields, setFormFields] = useState([]);
+
   useEffect(() => {
-    if (event) {
-      console.log("red ev", event);
-      console.log("reg events", event.eventForm?.fields);
+    console.log("Event data ->", event);
+    if (event?.event?.eventForm?.fields) {
+      setFormFields(event.event.eventForm.fields);
     }
   }, [event]);
+
+  console.log("formFields", formFields);
 
   const handleSubmit = async (formData: Record<string, any>) => {
     setIsSubmitting(true);
@@ -70,18 +74,19 @@ export default function EventRegistrationPage() {
     );
   }
 
-  // if (error || !event) {
-  //   return (
-  //     <div className="container mx-auto px-4 py-8">
-  //       <div className="text-center">
-  //         <p className="text-destructive">Event not found.</p>
-  //         <Button asChild className="mt-4">
-  //           <Link href="/">Back to Events</Link>
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (error || !event) {
+    console.log("ee ",event,error)
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <p className="text-destructive">Event not found.</p>
+          <Button asChild className="mt-4">
+            <Link href="/">Back to Events</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (isSubmitting) {
     return (
@@ -143,9 +148,9 @@ export default function EventRegistrationPage() {
               )}
             </CardHeader>
             <CardContent className="p-8">
-              {event.eventForm?.fields && event.eventForm.fields.length > 0 ? (
+              {formFields && formFields.length > 0 ? (
                 <FormBuilder
-                  fields={event.eventForm.fields}
+                  fields={formFields}
                   onSubmit={handleSubmit}
                   isLoading={isSubmitting}
                 />
