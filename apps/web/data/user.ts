@@ -1,9 +1,9 @@
 "use server";
 
 
-import { prisma } from "@joinUs/database";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import type { UserRole, UserStatus } from "@/types";
+import type {  UserStatus } from "@/types";
 
 export const getUserById = async (id: string) => {
   try {
