@@ -25,11 +25,18 @@ export default function EventDetailsPage() {
   const params = useParams();
   const eventId = params.id as string;
   
-  const { data: event, isLoading, error } = useEventQuery(eventId);
+  const { data: eventData, isLoading, error } = useEventQuery(eventId);
   const { data: allEvents } = useEventsQuery();
   const [showStickyButton, setShowStickyButton] = useState(false);
+
+
+  
   const [timeLeft, setTimeLeft] = useState("");
-console.log('event id',event)
+
+  const event = eventData?.event;;
+
+console.log("event id", event);
+  
   // Handle sticky button visibility
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +51,7 @@ console.log('event id',event)
   // Countdown timer
   useEffect(() => {
     if (!event) return;
+    
 
     const updateCountdown = () => {
       const eventDate = new Date(`${event.date}T${event.time}`);
