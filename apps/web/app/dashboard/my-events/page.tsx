@@ -147,6 +147,10 @@ export default function MyEventsPage() {
                 </div>
               )}
 
+              <div className="flex items-center text-sm text-gray-600">
+                <Clock className="h-4 w-4 mr-2 text-sky-500" />
+                {event.status || " "}
+              </div>
               <div className="flex gap-2 pt-2">
                 <Button
                   asChild

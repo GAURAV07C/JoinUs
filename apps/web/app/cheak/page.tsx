@@ -24,7 +24,6 @@ import { toast } from "sonner";
 import { useCreateEvent } from "@/hooks/use-events";
 
 type EventForm = {
- 
   label: string;
   fields: "text" | "number" | "checkbox" | "select"; // Updated to match server validation enum
   required: boolean;
@@ -51,12 +50,11 @@ export default function CreateEventPage() {
 
   const [formFields, setFormFields] = useState<EventForm[]>([
     {
-     
       label: "Full Name",
       fields: "text",
       required: true,
     },
-    {   
+    {
       label: "Email Address",
       fields: "text", // Changed from "email" to "text" to match server enum
       required: true,
@@ -106,7 +104,6 @@ export default function CreateEventPage() {
     }
   };
 
-
   const addFormField = () => {
     if (!newField.label) {
       toast.error("Please enter a field label");
@@ -114,7 +111,6 @@ export default function CreateEventPage() {
     }
 
     const field: EventForm = {
-     
       label: newField.label!,
       fields: newField.fields || "text",
       required: newField.required || false,

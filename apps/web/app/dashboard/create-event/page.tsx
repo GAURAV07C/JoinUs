@@ -21,13 +21,11 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Plus, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
-
 import { useCreateEvent } from "@/hooks/use-events";
 
 type EventForm = {
-  id: string;
   label: string;
-  fields: "text" | "email" | "dropdown" | "file";
+  fields: "text" | "number" | "checkbox" | "select"; // Updated to match server validation enum
   required: boolean;
   options?: string[];
 };
@@ -52,15 +50,13 @@ export default function CreateEventPage() {
 
   const [formFields, setFormFields] = useState<EventForm[]>([
     {
-      id: "name",
       label: "Full Name",
       fields: "text",
       required: true,
     },
     {
-      id: "email",
       label: "Email Address",
-      fields: "email",
+      fields: "text", // Changed from "email" to "text" to match server enum
       required: true,
     },
   ]);
@@ -78,22 +74,27 @@ export default function CreateEventPage() {
 
     try {
       const formData = new FormData();
-      formData.append("name", eventData.name);
-      formData.append("description", eventData.description);
-      formData.append("date", eventData.date);
-      formData.append("time", eventData.time);
-      formData.append("venue", eventData.venue);
-      formData.append("price", String(eventData.price ?? 0));
-      formData.append("requirements", JSON.stringify(formFields ?? []));
-      formData.append("city", eventData.city);
-      formData.append("state", eventData.state);
-      formData.append("maxAttendees", String(eventData.maxAttendees));
-      formData.append("category", eventData.type);
 
-      console.log("Submitting event data:", Object.fromEntries(formData));
+      // Append basic event data
+      Object.entries(eventData).forEach(([key, value]) => {
+        formData.append(key, String(value ?? ""));
+      });
 
-      // await createEvent(formData);
+      // Clean and append formFields
+      const cleanFormFields = formFields.map((field) => ({
+        label: field.label,
+        type: field.fields, // match server enum: text, number, checkbox, select
+        required: field.required,
+        ...(field.options && { options: field.options }),
+      }));
+      formData.append("formFields", JSON.stringify(cleanFormFields));
 
+      console.log("[v1] Submitting event data:", Object.fromEntries(formData));
+      console.log("[v1] Clean form fields:", cleanFormFields);
+
+      await createEvent(formData);
+
+      toast.success("Event created successfully!");
       router.push("/dashboard/my-events");
     } catch (error) {
       console.error("Event creation failed:", error);
@@ -104,14 +105,16 @@ export default function CreateEventPage() {
   };
 
   const addFormField = () => {
-    if (!newField.label) return;
+    if (!newField.label) {
+      toast.error("Please enter a field label");
+      return;
+    }
 
     const field: EventForm = {
-      id: newField.label!.toLowerCase().replace(/\s+/g, "_"),
       label: newField.label!,
       fields: newField.fields || "text",
       required: newField.required || false,
-      options: newField.fields === "dropdown" ? newField.options : undefined,
+      options: newField.fields === "select" ? newField.options : undefined, // Changed from "dropdown" to "select"
     };
 
     setFormFields([...formFields, field]);
@@ -121,11 +124,18 @@ export default function CreateEventPage() {
       required: false,
       options: [],
     });
+
+    console.log("[v0] Added new field:", field);
+    toast.success("Field added successfully");
   };
 
   const removeFormField = (index: number) => {
-    if (index < 2) return; // Don't allow removing name and email
+    if (index < 2) {
+      toast.error("Cannot remove required name and email fields");
+      return;
+    }
     setFormFields(formFields.filter((_, i) => i !== index));
+    toast.success("Field removed");
   };
 
   const addOption = () => {
@@ -366,20 +376,20 @@ export default function CreateEventPage() {
         </Card>
 
         {/* Registration Form Builder */}
-        {/* <Card> */}
-          {/* <CardHeader>
+        <Card>
+          <CardHeader>
             <CardTitle>Registration Form</CardTitle>
             <p className="text-sm text-muted-foreground">
               Customize the registration form for your event
             </p>
-          // </CardHeader> */}
-          {/* // <CardContent className="space-y-6"> */}
+          </CardHeader>
+          <CardContent className="space-y-6">
             {/* Existing Fields */}
-            {/* <div className="space-y-4">
+            <div className="space-y-4">
               <h4 className="font-medium">Form Fields</h4>
               {formFields.map((field, index) => (
                 <div
-                  key={field.id}
+                  key={field.label}
                   className="flex items-center justify-between p-4 border rounded-lg"
                 >
                   <div className="flex items-center gap-4">
@@ -405,12 +415,12 @@ export default function CreateEventPage() {
                   )}
                 </div>
               ))}
-            </div> */}
+            </div>
 
-            {/* <Separator /> */}
+            <Separator />
 
             {/* Add New Field */}
-            {/* <div className="space-y-4">
+            <div className="space-y-4">
               <h4 className="font-medium">Add New Field</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -428,7 +438,7 @@ export default function CreateEventPage() {
                   <Select
                     value={newField.fields}
                     onValueChange={(
-                      value: "text" | "email" | "dropdown" | "file"
+                      value: "text" | "number" | "checkbox" | "select"
                     ) => setNewField({ ...newField, fields: value })}
                   >
                     <SelectTrigger>
@@ -436,9 +446,9 @@ export default function CreateEventPage() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="text">Text</SelectItem>
-                      <SelectItem value="email">Email</SelectItem>
-                      <SelectItem value="dropdown">Dropdown</SelectItem>
-                      <SelectItem value="file">File Upload</SelectItem>
+                      <SelectItem value="number">Number</SelectItem>
+                      <SelectItem value="checkbox">Checkbox</SelectItem>
+                      <SelectItem value="select">Dropdown</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -455,7 +465,7 @@ export default function CreateEventPage() {
                 <Label htmlFor="required">Required field</Label>
               </div>
 
-              {newField.fields === "dropdown" && (
+              {newField.fields === "select" && (
                 <div className="space-y-2">
                   <Label>Options</Label>
                   {newField.options?.map(
@@ -490,21 +500,20 @@ export default function CreateEventPage() {
               <Button
                 type="button"
                 onClick={addFormField}
-                disabled={!newField.fields}
+                disabled={!newField.label}
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Field
               </Button>
             </div>
           </CardContent>
-        </Card> */}
+        </Card>
 
         {/* Submit */}
         <div className="flex gap-4">
           <Button type="submit" disabled={isLoading} className="flex-1">
-            {isLoading ? "drafting Event.." : "Draft Event"}
+            {isLoading ? "Creating Event..." : "Create Event"}
           </Button>
-
         </div>
       </form>
     </div>

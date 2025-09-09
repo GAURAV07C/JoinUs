@@ -419,7 +419,7 @@ console.log("event id", event);
                     </h3>
                     <p className="text-sm text-muted-foreground mb-3">
                       {formatDate(similarEvent.date)} •{" "}
-                      {similarEvent.location.city}
+                      {similarEvent.city}
                     </p>
                     <Button asChild size="sm" className="w-full">
                       <Link href={`/event/${similarEvent.id}`}>View Event</Link>

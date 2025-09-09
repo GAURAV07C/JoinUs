@@ -29,11 +29,71 @@ export default function HomePage() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  const filteredEvents = useMemo(() => {
-    if (!events || !Array.isArray(events)) return [];
+  // const filteredEvents = useMemo(() => {
+  //   if (!events || !Array.isArray(events)) return [];
   
 
+  //   return events.filter((event: Event) => {
+  //     // Safely handle search matching
+  //     const searchTerm = debouncedSearch.toLowerCase();
+  //     const matchesSearch =
+  //       !searchTerm ||
+  //       (event.name && event.name.toLowerCase().includes(searchTerm)) ||
+  //       (event.description &&
+  //         event.description.toLowerCase().includes(searchTerm)) ||
+  //       (event.tags &&
+  //         Array.isArray(event.tags) &&
+  //         event.tags.some(
+  //           (tag) => tag && tag.toLowerCase().includes(searchTerm)
+  //         )) ||
+  //       (event.organizer &&
+  //         event.organizer.name &&
+  //         event.organizer.name.toLowerCase().includes(searchTerm));
+
+  //     const matchesType = typeFilter === "all" || event.type === typeFilter;
+  //     const matchesPaid =
+  //       paidFilter === "all" ||
+  //       (paidFilter === "free" && !event.isPaid) ||
+  //       (paidFilter === "paid" && event.isPaid);
+
+  //     const matchesLocation =
+  //       locationFilter === "all" ||
+  //       (event.city &&
+  //         event.city.toLowerCase() === locationFilter.toLowerCase());
+
+  //     const matchesDate =
+  //       !dateFilter ||
+  //       (event.date &&
+  //         new Date(event.date).toDateString() === dateFilter.toDateString());
+
+  //     return (
+  //       matchesSearch &&
+  //       matchesType &&
+  //       matchesPaid &&
+  //       matchesLocation &&
+  //       matchesDate
+  //     );
+  //   });
+  // }, [
+  //   events,
+  //   debouncedSearch,
+  //   typeFilter,
+  //   paidFilter,
+  //   locationFilter,
+  //   dateFilter,
+  // ]);
+
+
+
+  const filteredEvents = useMemo(() => {
+    if (!events || !Array.isArray(events)) return [];
+
     return events.filter((event: Event) => {
+      // ✅ Allow only published events
+      if (event.status !== "PUBLISHED") {
+        return false;
+      }
+
       // Safely handle search matching
       const searchTerm = debouncedSearch.toLowerCase();
       const matchesSearch =
