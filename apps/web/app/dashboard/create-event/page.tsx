@@ -24,8 +24,9 @@ import { toast } from "sonner";
 import { useCreateEvent } from "@/hooks/use-events";
 
 type EventForm = {
+  id: string;
   label: string;
-  fields: "text" | "number" | "checkbox" | "select"; // Updated to match server validation enum
+  fields: "number" | "text" | "checkbox" | "select" | "email"; // Updated to match server validation enum
   required: boolean;
   options?: string[];
 };
@@ -50,13 +51,15 @@ export default function CreateEventPage() {
 
   const [formFields, setFormFields] = useState<EventForm[]>([
     {
+      id: "f_name",
       label: "Full Name",
       fields: "text",
       required: true,
     },
     {
+      id: "f_email",
       label: "Email Address",
-      fields: "text", // Changed from "email" to "text" to match server enum
+      fields: "email", // Changed from "email" to "text" to match server enum
       required: true,
     },
   ]);
@@ -82,15 +85,16 @@ export default function CreateEventPage() {
 
       // Clean and append formFields
       const cleanFormFields = formFields.map((field) => ({
+        id:field.id,
         label: field.label,
-        type: field.fields, // match server enum: text, number, checkbox, select
+        field: field.fields, // match server enum: text, number, checkbox, select
         required: field.required,
         ...(field.options && { options: field.options }),
       }));
       formData.append("formFields", JSON.stringify(cleanFormFields));
 
-      console.log("[v1] Submitting event data:", Object.fromEntries(formData));
-      console.log("[v1] Clean form fields:", cleanFormFields);
+      console.log("Submitting event data:", Object.fromEntries(formData));
+      console.log(" Clean form fields:", cleanFormFields);
 
       await createEvent(formData);
 
@@ -111,6 +115,7 @@ export default function CreateEventPage() {
     }
 
     const field: EventForm = {
+      id: `f_${newField.label}`,
       label: newField.label!,
       fields: newField.fields || "text",
       required: newField.required || false,
@@ -125,7 +130,7 @@ export default function CreateEventPage() {
       options: [],
     });
 
-    console.log("[v0] Added new field:", field);
+    console.log("Added new field:", field);
     toast.success("Field added successfully");
   };
 
@@ -438,7 +443,7 @@ export default function CreateEventPage() {
                   <Select
                     value={newField.fields}
                     onValueChange={(
-                      value: "text" | "number" | "checkbox" | "select"
+                      value: "text" | "number" | "checkbox" | "select" | "email"
                     ) => setNewField({ ...newField, fields: value })}
                   >
                     <SelectTrigger>
@@ -449,6 +454,7 @@ export default function CreateEventPage() {
                       <SelectItem value="number">Number</SelectItem>
                       <SelectItem value="checkbox">Checkbox</SelectItem>
                       <SelectItem value="select">Dropdown</SelectItem>
+                      <SelectItem value="email">Email</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

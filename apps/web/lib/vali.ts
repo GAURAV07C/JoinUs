@@ -2,8 +2,9 @@ import { z } from "zod";
 
 // ✅ Form Field Schema for better validation
 export const formFieldSchema = z.object({
+  id : z.string() ,
   label: z.string().min(1, "Field label is required"),
-  type: z.enum(["text", "number", "checkbox", "select"]), // adjust based on your UI
+  field: z.enum(["text", "number", "checkbox", "select", "email"]), // adjust based on your UI
   placeholder: z.string().optional(),
   required: z.boolean().optional(),
   options: z.array(z.string()).optional(), // only used for "select"

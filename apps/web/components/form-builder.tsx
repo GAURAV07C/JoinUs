@@ -1,68 +1,81 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Lightweight form field type compatible with current event shape
 type FormField = {
-  id: string
-  label: string
-  type: "text" | "email" | "tel" | "textarea" | "dropdown" | "file"
-  required?: boolean
-  options?: string[]
-  placeholder?: string
-}
+  id: string;
+  label: string;
+  field: "text" | "email" | "tel" | "textarea" | "select" | "file" | "checkbox" | "number";
+  required?: boolean;
+  options?: string[];
+  placeholder?: string;
+};
 
 interface FormBuilderProps {
-  fields: FormField[]
-  onSubmit: (data: Record<string, any>) => void
-  isLoading?: boolean
+  fields: FormField[];
+  onSubmit: (data: Record<string, any>) => void;
+  isLoading?: boolean;
 }
 
-export function FormBuilder({ fields=[], onSubmit, isLoading = false }: FormBuilderProps) {
-  const [formData, setFormData] = useState<Record<string, any>>({})
-  const [errors, setErrors] = useState<Record<string, string>>({})
+export function FormBuilder({
+  fields = [],
+  onSubmit,
+  isLoading = false,
+}: FormBuilderProps) {
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Validate required fields
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
     fields.forEach((field) => {
-      const value = formData[field.id]
-      if (field.required && (value === undefined || value === null || value === "")) {
-        newErrors[field.id] = `${field.label} is required`
+      const value = formData[field.id];
+      if (
+        field.required &&
+        (value === undefined || value === null || value === "")
+      ) {
+        newErrors[field.id] = `${field.label} is required`;
       }
-    })
+    });
 
-    console.log("f",fields)
+    console.log("f", fields);
 
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
+      setErrors(newErrors);
+      return;
     }
 
-    setErrors({})
-    onSubmit(formData)
-  }
+    setErrors({});
+    onSubmit(formData);
+  };
 
   const handleFieldChange = (fieldId: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [fieldId]: value }))
+    setFormData((prev) => ({ ...prev, [fieldId]: value }));
     if (errors[fieldId]) {
-      setErrors((prev) => ({ ...prev, [fieldId]: "" }))
+      setErrors((prev) => ({ ...prev, [fieldId]: "" }));
     }
-  }
+  };
 
   const renderField = (field: FormField) => {
-    const error = errors[field.id]
+    const error = errors[field.id];
 
-    switch (field.type) {
+    switch (field.field) {
       case "text":
       case "email":
       case "tel":
@@ -70,11 +83,13 @@ export function FormBuilder({ fields=[], onSubmit, isLoading = false }: FormBuil
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id}>
               {field.label}
-              {field.required && <span className="text-destructive ml-1">*</span>}
+              {field.required && (
+                <span className="text-destructive ml-1">*</span>
+              )}
             </Label>
             <Input
               id={field.id}
-              type={field.type}
+              type={field.field}
               placeholder={field.placeholder}
               value={formData[field.id] || ""}
               onChange={(e) => handleFieldChange(field.id, e.target.value)}
@@ -82,14 +97,16 @@ export function FormBuilder({ fields=[], onSubmit, isLoading = false }: FormBuil
             />
             {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
-        )
+        );
 
       case "textarea":
         return (
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id}>
               {field.label}
-              {field.required && <span className="text-destructive ml-1">*</span>}
+              {field.required && (
+                <span className="text-destructive ml-1">*</span>
+              )}
             </Label>
             <Textarea
               id={field.id}
@@ -101,16 +118,21 @@ export function FormBuilder({ fields=[], onSubmit, isLoading = false }: FormBuil
             />
             {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
-        )
+        );
 
-      case "dropdown":
+      case "select":
         return (
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id}>
               {field.label}
-              {field.required && <span className="text-destructive ml-1">*</span>}
+              {field.required && (
+                <span className="text-destructive ml-1">*</span>
+              )}
             </Label>
-            <Select value={formData[field.id] || ""} onValueChange={(value) => handleFieldChange(field.id, value)}>
+            <Select
+              value={formData[field.id] || ""}
+              onValueChange={(value) => handleFieldChange(field.id, value)}
+            >
               <SelectTrigger className={error ? "border-destructive" : ""}>
                 <SelectValue placeholder={`Select ${field.label}`} />
               </SelectTrigger>
@@ -124,14 +146,16 @@ export function FormBuilder({ fields=[], onSubmit, isLoading = false }: FormBuil
             </Select>
             {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
-        )
+        );
 
       case "file":
         return (
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id}>
               {field.label}
-              {field.required && <span className="text-destructive ml-1">*</span>}
+              {field.required && (
+                <span className="text-destructive ml-1">*</span>
+              )}
             </Label>
             <Input
               id={field.id}
@@ -141,12 +165,87 @@ export function FormBuilder({ fields=[], onSubmit, isLoading = false }: FormBuil
             />
             {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
-        )
+        );
+
+      case "checkbox":
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label>{field.label}</Label>
+            <div className="space-y-1">
+              {field.options && field.options.length > 0 ? (
+                // Multiple checkboxes (array of selected options)
+                field.options.map((option) => (
+                  <div key={option} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={`${field.id}-${option}`}
+                      checked={formData[field.id]?.includes(option) || false}
+                      onChange={(e) => {
+                        const currentValues = formData[field.id] || [];
+                        if (e.target.checked) {
+                          handleFieldChange(field.id, [
+                            ...currentValues,
+                            option,
+                          ]);
+                        } else {
+                          handleFieldChange(
+                            field.id,
+                            currentValues.filter(
+                              (val: string) => val !== option
+                            )
+                          );
+                        }
+                      }}
+                      className="h-4 w-4"
+                    />
+                    <label htmlFor={`${field.id}-${option}`}>{option}</label>
+                  </div>
+                ))
+              ) : (
+                // Single checkbox (boolean)
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id={field.id}
+                    checked={formData[field.id] || false}
+                    onChange={(e) =>
+                      handleFieldChange(field.id, e.target.checked)
+                    }
+                    className="h-4 w-4"
+                  />
+                  <label htmlFor={field.id}>{field.label}</label>
+                </div>
+              )}
+            </div>
+            {error && <p className="text-sm text-destructive">{error}</p>}
+          </div>
+        );
+
+      case "number": // add this
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label htmlFor={field.id}>
+              {field.label}
+              {field.required && (
+                <span className="text-destructive ml-1">*</span>
+              )}
+            </Label>
+            <Input
+              id={field.id}
+              type={field.field} // this will now be "number"
+              placeholder={field.placeholder}
+              value={formData[field.id] || ""}
+              onChange={(e) => handleFieldChange(field.id, e.target.value)}
+              className={error ? "border-destructive" : ""}
+            />
+            {error && <p className="text-sm text-destructive">{error}</p>}
+          </div>
+        );
 
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -155,5 +254,5 @@ export function FormBuilder({ fields=[], onSubmit, isLoading = false }: FormBuil
         {isLoading ? "Submitting..." : "Submit Registration"}
       </Button>
     </form>
-  )
+  );
 }

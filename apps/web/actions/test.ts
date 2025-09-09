@@ -125,6 +125,8 @@ export async function createEventAction(formData: FormData) {
       : [],
   };
 
+  
+
   try {
     // Validate using Zod
     const validatedData = eventSchema.parse(rawData);
