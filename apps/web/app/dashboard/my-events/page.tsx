@@ -135,7 +135,9 @@ export default function MyEventsPage() {
                     <div className="flex items-center text-sm text-green-600">
                       <div className="h-2 w-2 bg-green-500 rounded-full mr-2" />
                       Registered on{" "}
-                      {format(new Date(registration.registeredAt), "PP")}
+                      {registration?.registeredAt
+                        ? format(new Date(registration.registeredAt), "PP")
+                        : "Date not available"}
                     </div>
                     <Badge
                       variant="outline"
