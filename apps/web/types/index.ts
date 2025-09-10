@@ -107,14 +107,12 @@ export interface EventRegistration {
 }
 
 export interface EventForm {
- 
-  label: string | null;
+  id: string;
+  label?: string | null;
   fields: any; // JSON type
   placeholder?: string | null;
   required?: boolean | null;
   options?: string[];
-  
-
 
   // Relations
   event?: Event;
