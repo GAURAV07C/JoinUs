@@ -16,7 +16,7 @@ export function useEventsQuery() {
     try {
       setIsLoading(true);
       const result = await getEventsAction();
-      console.log(result);
+      
       if (result.success) {
         setData(result.events || []);
         setError(null);
@@ -46,7 +46,6 @@ export function useEventQuery(id: string) {
     try {
       setIsLoading(true);
       const event = await getEventByIdAction(id);
-      console.log("ev", event);
 
       setData(event);
       setError(null);

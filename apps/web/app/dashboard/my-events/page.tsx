@@ -33,11 +33,13 @@ export default function MyEventsPage() {
   const { data: session } = useSession();
   const user = session?.user;
 
+  const role = user?.role;
+
   const { data: events, isLoading: eventsLoading } = useEventsQuery();
   const { data: registrations, isLoading: registrationsLoading } =
     useUserRegistrationsQuery(user?.id || "");
 
-  console.log("reg", registrations);
+  
 
   if (eventsLoading || registrationsLoading) {
     return <LoadingAnimation />;
@@ -80,7 +82,7 @@ export default function MyEventsPage() {
       (reg: any) => reg.eventId === event.id
     );
 
-    console.log(" ew reg", registration);
+
 
     const title = event.name || event.title;
     const category =
@@ -176,7 +178,9 @@ export default function MyEventsPage() {
                     size="sm"
                     className="bg-gradient-to-r from-sky-500 to-cyan-500"
                   >
-                    <Link href={`/event/${event.id}/qr`}>
+                    <Link
+                      href={`/event/${event.id}/qr?registrationId=${registration?.eventId}`}
+                    >
                       <QrCode className="h-4 w-4 mr-2" />
                       QR Code
                     </Link>
@@ -230,7 +234,9 @@ export default function MyEventsPage() {
       <Tabs defaultValue="registered" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
           <TabsTrigger value="registered">Registered Events</TabsTrigger>
-          <TabsTrigger value="created">Created Events</TabsTrigger>
+          {role != "USER" && (
+            <TabsTrigger value="created">Created Events</TabsTrigger>
+          )}
         </TabsList>
 
         <TabsContent value="registered">

@@ -94,7 +94,6 @@ export default function CreateEventPage() {
       formData.append("formFields", JSON.stringify(cleanFormFields));
 
       console.log("Submitting event data:", Object.fromEntries(formData));
-      console.log(" Clean form fields:", cleanFormFields);
 
       await createEvent(formData);
 
