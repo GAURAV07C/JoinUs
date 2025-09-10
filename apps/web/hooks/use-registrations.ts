@@ -5,6 +5,7 @@ import {
   getUserRegistrationsAction,
   getEventRegistrationsAction,
   markAttendanceAction,
+  cheakRegistrationAction,
 } from "@/actions/registrations";
 import { useRegistrationsStore } from "@/stores/registrations-store";
 import { toast } from "sonner";
@@ -144,5 +145,22 @@ export function useMarkAttendance() {
         error instanceof Error ? error.message : "Failed to mark attendance"
       );
     },
+  });
+}
+
+
+export function useCheakRegistration(eventId: string) {
+  return useQuery({
+    queryKey: ["check-registration", eventId],
+    queryFn: async () => {
+      const result = await cheakRegistrationAction(eventId);
+
+      if (!result.success) {
+        throw new Error(result.message ?? "Failed to check registration");
+      }
+
+      return result; 
+    },
+    enabled: !!eventId, // only run if eventId is provided
   });
 }

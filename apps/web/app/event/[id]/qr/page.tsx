@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,7 +10,11 @@ import { ArrowLeft, Home } from "lucide-react";
 
 export default function QRCodePage() {
   const params = useParams();
+  const searchParams = useSearchParams();
+
   const eventId = params.id as string;
+  const registrationId = searchParams.get("registrationId");
+
   const { data: event, isLoading, error } = useEventQuery(eventId);
 
   if (isLoading) {
@@ -48,14 +52,23 @@ export default function QRCodePage() {
         <p className="text-muted-foreground">
           Your QR code is ready. Save it for event entry.
         </p>
+        {!registrationId && (
+          <p className="text-sm text-destructive mt-2">
+            Registration ID not found. Please contact support.
+          </p>
+        )}
       </div>
 
-      <QRDisplay
-        eventName={event.name}
-        eventDate={event.date}
-        eventTime={event.time}
-        venue={event.venue}
-      />
+      {registrationId && (
+        <QRDisplay
+          eventId={eventId}
+          eventName={event.name}
+          eventDate={event.date}
+          eventTime={event.time}
+          venue={event.venue}
+          registrationId={registrationId} // unique QR
+        />
+      )}
 
       {/* Navigation */}
       <div className="max-w-md mx-auto mt-8 space-y-3">
@@ -75,3 +88,4 @@ export default function QRCodePage() {
     </div>
   );
 }
+

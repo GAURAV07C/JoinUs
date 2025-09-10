@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -11,48 +11,37 @@ import { FormBuilder } from "@/components/form-builder";
 import { LoadingAnimation } from "@/components/loading-animation";
 import { useEventQuery } from "@/hooks/useEventsQuery";
 import { ArrowLeft, CheckCircle } from "lucide-react";
+import { useFormSubmission } from "@/hooks/use-submission";
 
 export default function EventRegistrationPage() {
   const params = useParams();
   const router = useRouter();
   const eventId = params.id as string;
   const { data: event, isLoading, error } = useEventQuery(eventId);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitProgress, setSubmitProgress] = useState(0);
 
   const [formFields, setFormFields] = useState([]);
+  const formId = event?.event?.eventForm?.id;
 
   useEffect(() => {
-    console.log("Event data ->", event);
     if (event?.event?.eventForm?.fields) {
       setFormFields(event.event.eventForm.fields);
     }
   }, [event]);
 
-  console.log("formFields", formFields);
+  const {
+    submitForm,
+    isSubmitting,
+    progress,
+    isSuccess,
+    error: submitError,
+    reset,
+  } = useFormSubmission(eventId, formId);
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    setIsSubmitting(true);
-    setSubmitProgress(0);
-
-    const steps = [
-      { progress: 25, text: "Validating information" },
-      { progress: 50, text: "Processing registration" },
-      { progress: 75, text: "Generating QR code" },
-      { progress: 100, text: "Registration complete" },
-    ];
-
-    for (const step of steps) {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setSubmitProgress(step.progress);
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    setIsSubmitting(false);
-    router.push(`/event/${eventId}/qr`);
+    await submitForm(formData);
   };
 
+  // Loading skeleton
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -74,20 +63,19 @@ export default function EventRegistrationPage() {
     );
   }
 
+  // Error state
   if (error || !event) {
-    console.log("ee ",event,error)
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <p className="text-destructive">Event not found.</p>
-          <Button asChild className="mt-4">
-            <Link href="/">Back to Events</Link>
-          </Button>
-        </div>
+      <div className="container mx-auto px-4 py-8 text-center">
+        <p className="text-destructive">Event not found.</p>
+        <Button asChild className="mt-4">
+          <Link href="/">Back to Events</Link>
+        </Button>
       </div>
     );
   }
 
+  // Submission progress
   if (isSubmitting) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
@@ -97,9 +85,9 @@ export default function EventRegistrationPage() {
             <div className="mt-6 space-y-2">
               <div className="flex justify-between text-sm">
                 <span>Progress</span>
-                <span>{submitProgress}%</span>
+                <span>{progress}%</span>
               </div>
-              <Progress value={submitProgress} className="h-2" />
+              <Progress value={progress} className="h-2" />
             </div>
           </CardContent>
         </Card>
@@ -107,10 +95,10 @@ export default function EventRegistrationPage() {
     );
   }
 
+  // Registration form
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="mb-8">
           <Button variant="ghost" asChild className="mb-4">
             <Link href={`/event/${eventId}`}>

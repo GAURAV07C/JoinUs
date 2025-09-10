@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from "crypto";
 import { prisma } from "@/lib/prisma";
 import type { RegistrationStatus } from "@/types";
 
@@ -54,6 +54,19 @@ export async function createRegistration(userId: string, eventId: string) {
     console.error("Error creating registration:", error);
     throw error;
   }
+}
+
+export async function checkUserRegistration(userId: string, eventId: string) {
+  const registration = await prisma.eventRegistration.findUnique({
+    where: {
+      userId_eventId: {
+        userId,
+        eventId,
+      },
+    },
+  });
+
+  return registration ? true : false;
 }
 
 export async function getUserRegistrations(userId: string) {
@@ -140,3 +153,8 @@ export async function cancelRegistration(id: string) {
     throw error;
   }
 }
+
+
+
+
+

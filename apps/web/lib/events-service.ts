@@ -61,20 +61,20 @@ export async function getEventById(id: string) {
     const event = await prisma.event.findUnique({
       where: { id },
       include: {
-       eventForm:true,
-       registrations:true,
-       formSubmissions:true,
-       organizer:true,
+        eventForm: true,
+        registrations: true,
+        formSubmissions: true,
+        organizer: true,
       },
     });
     if (!event) return null;
 
     const registrations = await prisma.eventRegistration.findMany({
       where: { eventId: id },
-      include:{
-        event:true,
-        user:true
-      }
+      include: {
+        event: true,
+        user: true,
+      },
     });
     const registrationCount = registrations.length;
 
@@ -97,10 +97,10 @@ export async function getEventById(id: string) {
       featured: event.featured,
       tags: event.tags,
       eventForm: event.eventForm,
-      registrations:event.organizer,
-      organizer :event.organizer,
+      registrations: event.organizer,
+      organizer: event.organizer,
       organizerId: event.organizerId,
-      formSubmissions:event.formSubmissions,
+      formSubmissions: event.formSubmissions,
       currentAttendees: registrationCount,
       rejectionReason: event.reason,
       createdAt: event.createdAt,
@@ -215,7 +215,6 @@ export async function createEvent(eventData: {
     throw error;
   }
 }
-
 
 export async function updateEvent(
   id: string,
@@ -333,3 +332,4 @@ export async function deleteEvent(id: string) {
     return false;
   }
 }
+

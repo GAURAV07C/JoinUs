@@ -20,23 +20,30 @@ import {
   Heart,
   Timer,
 } from "lucide-react";
+import { useCheakRegistration } from "@/hooks/use-registrations";
 
 export default function EventDetailsPage() {
   const params = useParams();
   const eventId = params.id as string;
-  
-  const { data: eventData, isLoading, error } = useEventQuery(eventId);
+  const {
+    data: registrationData,
+    isLoading: isRegistrationLoading,
+    isError: isRegistrationError,
+  } = useCheakRegistration(eventId);
+  const {
+    data: eventData,
+    isLoading: isEventLoading,
+    error,
+  } = useEventQuery(eventId);
   const { data: allEvents } = useEventsQuery();
   const [showStickyButton, setShowStickyButton] = useState(false);
 
+  const isLoading = isRegistrationLoading || isEventLoading;
 
-  
   const [timeLeft, setTimeLeft] = useState("");
 
-  const event = eventData?.event;;
+  const event = eventData?.event;
 
-console.log("event id", event);
-  
   // Handle sticky button visibility
   useEffect(() => {
     const handleScroll = () => {
@@ -51,7 +58,6 @@ console.log("event id", event);
   // Countdown timer
   useEffect(() => {
     if (!event) return;
-    
 
     const updateCountdown = () => {
       const eventDate = new Date(`${event.date}T${event.time}`);
@@ -129,8 +135,7 @@ console.log("event id", event);
     allEvents
       ?.filter(
         (e) =>
-          e.id !== event.id &&
-          (e.type === event.type || e.city === event.city)
+          e.id !== event.id && (e.type === event.type || e.city === event.city)
       )
       .slice(0, 3) || [];
 
@@ -278,7 +283,7 @@ console.log("event id", event);
                 </p>
 
                 {/* Tags */}
-                {/* <div className="flex flex-wrap gap-2 mt-6">
+                <div className="flex flex-wrap gap-2 mt-6">
                   {event.tags.map((tag: string) => (
                     <Badge
                       key={tag}
@@ -288,7 +293,7 @@ console.log("event id", event);
                       {tag}
                     </Badge>
                   ))}
-                </div> */}
+                </div>
               </CardContent>
             </Card>
 
@@ -329,68 +334,47 @@ console.log("event id", event);
               <CardHeader>
                 <CardTitle>Register for Event</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
-                {event.isPaid && (
-                  <div className="text-center p-4 bg-primary/5 rounded-lg">
-                    <p className="text-3xl font-bold text-primary">
-                      ₹{event.price}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Registration Fee
-                    </p>
-                  </div>
-                )}
-
-                {/* Progress Bar */}
-                {event.maxAttendees && (
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Registered</span>
-                      <span>{Math.round(attendancePercentage)}% Full</span>
+              {registrationData?.registered ? (
+                <p>You are already registered </p>
+              ) : (
+                <CardContent className="space-y-6">
+                  {event.isPaid && (
+                    <div className="text-center p-4 bg-primary/5 rounded-lg">
+                      <p className="text-3xl font-bold text-primary">
+                        ₹{event.price}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Registration Fee
+                      </p>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-primary h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${attendancePercentage}%` }}
-                      />
+                  )}
+
+                  {/* Progress Bar */}
+                  {event.maxAttendees && (
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Registered</span>
+                        <span>{Math.round(attendancePercentage)}% Full</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-primary h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${attendancePercentage}%` }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                <Button asChild className="w-full" size="lg">
-                  <Link href={`/event/${eventId}/register`}>
-                    Register Now
-                    {event.isPaid && (
-                      <span className="ml-2">• ₹{event.price}</span>
-                    )}
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Registration Requirements */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle>Registration Requirements</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {event.formFields?.map((field: any) => (
-                    <li
-                      key={field.id}
-                      className="flex items-center gap-3 text-sm"
-                    >
-                      <div className="h-2 w-2 rounded-full bg-primary flex-shrink-0" />
-                      <span>
-                        {field.label}
-                        {field.required && (
-                          <span className="text-destructive ml-1">*</span>
-                        )}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
+                  <Button asChild className="w-full" size="lg">
+                    <Link href={`/event/${eventId}/register`}>
+                      Register Now
+                      {event.isPaid && (
+                        <span className="ml-2">• ₹{event.price}</span>
+                      )}
+                    </Link>
+                  </Button>
+                </CardContent>
+              )}
             </Card>
           </div>
         </div>
@@ -418,8 +402,7 @@ console.log("event id", event);
                       {similarEvent.name}
                     </h3>
                     <p className="text-sm text-muted-foreground mb-3">
-                      {formatDate(similarEvent.date)} •{" "}
-                      {similarEvent.city}
+                      {formatDate(similarEvent.date)} • {similarEvent.city}
                     </p>
                     <Button asChild size="sm" className="w-full">
                       <Link href={`/event/${similarEvent.id}`}>View Event</Link>
