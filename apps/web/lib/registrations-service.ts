@@ -80,7 +80,7 @@ export async function getUserRegistrations(userId: string) {
       userId: reg.userId,
       eventId: reg.eventId,
       status: reg.status,
-      createdAt: reg.registeredAt,
+      registeredAt: reg.registeredAt,
       updatedAt: reg.updatedAt,
     }));
   } catch (error) {
@@ -153,8 +153,3 @@ export async function cancelRegistration(id: string) {
     throw error;
   }
 }
-
-
-
-
-

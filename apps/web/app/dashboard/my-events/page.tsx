@@ -37,6 +37,8 @@ export default function MyEventsPage() {
   const { data: registrations, isLoading: registrationsLoading } =
     useUserRegistrationsQuery(user?.id || "");
 
+  console.log("reg", registrations);
+
   if (eventsLoading || registrationsLoading) {
     return <LoadingAnimation />;
   }
@@ -77,6 +79,8 @@ export default function MyEventsPage() {
     const registration = (registrations || []).find(
       (reg: any) => reg.eventId === event.id
     );
+
+    console.log(" ew reg", registration);
 
     const title = event.name || event.title;
     const category =
