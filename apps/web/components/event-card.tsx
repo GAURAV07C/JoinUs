@@ -24,8 +24,10 @@ export function EventCard({
   if (!event) {
     return null;
   }
-
   const formatDate = (dateString: string) => {
+    if (!dateString || isNaN(new Date(dateString).getTime())) {
+      return "Date not available";
+    }
     return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
@@ -34,7 +36,10 @@ export function EventCard({
   };
 
   const formatTime = (timeString: string) => {
-    return new Date(`2000-01-01T${timeString}`).toLocaleTimeString("en-US", {
+    if (!timeString) return "Time not available";
+    const date = new Date(`2000-01-01T${timeString}`);
+    if (isNaN(date.getTime())) return "Time not available";
+    return date.toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
