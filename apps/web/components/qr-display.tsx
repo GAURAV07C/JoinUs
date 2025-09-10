@@ -13,7 +13,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { toast } from "sonner";
-import { QRCodeSVG } from "QRCode.react"; // add this package
+import QRCode from "react-qr-code";
 
 interface QRDisplayProps {
   eventId : string;
@@ -117,7 +117,7 @@ export function QRDisplay({
             <div className="relative">
               <div className="w-48 h-48 border-2 border-dashed border-primary/30 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
                 {/* QR Code */}
-                <QRCodeSVG value={registrationId} size={160} />
+                <QRCode value={registrationId} size={160} />
               </div>
             </div>
           </div>
