@@ -4,10 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
+    "dev": "next dev --hostname 127.0.0.1 --port 3001",
     "build": "next build",
     "build:deployee": "prisma generate && next build",
-    "start": "next start --port 3001",
+    "start": "next start --hostname 127.0.0.1 --port 3001",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "db:reset": "prisma migrate reset && npm run db:migrate:dev ",
