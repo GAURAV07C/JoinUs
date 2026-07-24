@@ -76,7 +76,7 @@ export interface Event {
   };
 
   // Approval tracking
-  rejectionReason?: string | null;
+  reason?: string | null;
 
   currentAttendees?: number;
 

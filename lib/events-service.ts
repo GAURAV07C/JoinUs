@@ -45,7 +45,7 @@ export async function getAllEvents() {
           : null,
 
         currentAttendees: registrationCount,
-        rejectionReason: event.rejectionReason,
+        reason: event.reason,
         createdAt: event.createdAt,
         updatedAt: event.updatedAt,
       };
@@ -102,7 +102,7 @@ export async function getEventById(id: string) {
       organizerId: event.organizerId,
       formSubmissions: event.formSubmissions,
       currentAttendees: registrationCount,
-      rejectionReason: event.rejectionReason,
+      reason: event.reason,
       createdAt: event.createdAt,
       updatedAt: event.updatedAt,
     };
@@ -186,7 +186,7 @@ export async function createEvent(eventData: {
             tags: tags || [],
             featured: featured || false,
             status: status ?? "DRAFT",
-            rejectionReason: status === "REJECTED" ? (reason ?? null) : null,
+            reason: status === "REJECTED" ? (reason ?? null) : null,
           },
         }),
         prisma.eventForm.create({
@@ -312,7 +312,7 @@ export async function updateEventStatus(
       where: { id: eventId },
       data: {
         status,
-        rejectionReason: status === "REJECTED" ? (reason ?? null) : null,
+        reason: status === "REJECTED" ? (reason ?? null) : null,
       },
     });
 

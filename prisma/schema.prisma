@@ -83,7 +83,7 @@ model Event {
   organizer   User   @relation("EventOrganizer", fields: [organizerId], references: [id])
   
   // Approval tracking
-  rejectionReason String?
+  reason String?
   
   // Timestamps
   createdAt DateTime @default(now())

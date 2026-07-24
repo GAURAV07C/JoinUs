@@ -67,7 +67,7 @@ export interface Event {
     college?: string;
   };
   currentAttendees?: number;
-  rejectionReason?: string;
+  reason?: string;
   createdAt: Date;
   updatedAt: Date;
   formFields?: FormField[];
