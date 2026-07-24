@@ -4,7 +4,7 @@
 
 import { randomUUID } from "crypto";
 import { prisma } from "@/lib/prisma";
-import type { Prisma } from "@/generated/client";
+import type { Prisma } from "@prisma/client";
 
 export async function submitFormAndRegister(
   userId: string,

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { EventStatus, Prisma } from "@/generated/client";
+import type { EventStatus, Prisma } from "@prisma/client";
 
 export async function getAllEvents() {
   try {

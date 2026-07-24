@@ -23,7 +23,6 @@ coverage
 out/
 build
 dist
-generated/
 
 
 # Debug
@@ -32,3 +31,6 @@ npm-debug.log*
 # Misc
 .DS_Store
 *.pem
+
+CREDENTIALS.md
+USERS.md
