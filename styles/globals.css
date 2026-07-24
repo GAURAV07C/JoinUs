@@ -2,8 +2,6 @@
 @source "./app/**/*.{ts,tsx}";
 @source "./components/**/*.{ts,tsx}";
 
-@import "tw-animate-css";
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
