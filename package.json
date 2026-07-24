@@ -7,9 +7,9 @@
     "schema": "./prisma/schema.prisma"
   },
   "scripts": {
-    "dev": "next dev --hostname 127.0.0.1 --port 3001",
+    "dev": "next dev",
     "build": "prisma generate && next build",
-    "start": "next start --hostname 127.0.0.1 --port 3001",
+    "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit",

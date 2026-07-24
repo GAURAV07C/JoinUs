@@ -1,9 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useFormSubmissionStore } from "@/stores/submission-store";
-import { submitFormAndRegisterAction } from "@/actions/submition";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
 
 export function useFormSubmission(eventId: string, formId: string) {
   const router = useRouter();
@@ -28,7 +26,13 @@ export function useFormSubmission(eventId: string, formId: string) {
         setProgress(step);
       }
 
-      const result = await submitFormAndRegisterAction(eventId, formId, data);
+      const res = await fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventId, formId, formData: data }),
+      });
+
+      const result = await res.json();
 
       if (!result.success) {
         throw new Error(result.message);

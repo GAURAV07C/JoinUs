@@ -2,10 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import { getEventByIdAction, getEventsAction } from "@/actions/events";
-import { getUserRegistrationsAction } from "@/actions/registrations";
-
-// Using any to avoid type mismatch with multiple event shapes in codebase
+const API_BASE = "/api/eoptimise";
 
 export function useEventsQuery() {
   const [data, setData] = useState<any[]>([]);
@@ -15,8 +12,9 @@ export function useEventsQuery() {
   const fetchEvents = async () => {
     try {
       setIsLoading(true);
-      const result = await getEventsAction();
-      
+      const res = await fetch(API_BASE);
+      const result = await res.json();
+
       if (result.success) {
         setData(result.events || []);
         setError(null);
@@ -45,9 +43,9 @@ export function useEventQuery(id: string) {
   const fetchEvent = async () => {
     try {
       setIsLoading(true);
-      const event = await getEventByIdAction(id);
-
-      setData(event);
+      const res = await fetch(`${API_BASE}?id=${encodeURIComponent(id)}`);
+      const result = await res.json();
+      setData(result);
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch event");
@@ -73,7 +71,13 @@ export function useUserRegistrationsQuery(userId: string) {
   const fetchRegistrations = async () => {
     try {
       setIsLoading(true);
-      const result = await getUserRegistrationsAction();
+      const res = await fetch("/api/registrations", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await res.json();
+
       if (result.success) {
         setData(result.registrations || []);
         setError(null);
@@ -81,9 +85,7 @@ export function useUserRegistrationsQuery(userId: string) {
         setError(result.message ?? "Failed to fetch registrations");
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch registrations"
-      );
+      setError(err instanceof Error ? err.message : "Failed to fetch registrations");
     } finally {
       setIsLoading(false);
     }

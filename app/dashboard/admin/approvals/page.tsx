@@ -44,8 +44,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useSession } from "next-auth/react";
-import { getAllUsers, updateUserStatus } from "@/data/user";
-
 import type { User, UserStatus } from "@/types";
 import { toast } from "sonner";
 
@@ -65,8 +63,41 @@ export default function UserApprovalsPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [actionReason, setActionReason] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
-  if (!currentUser || currentUser.role !== "ADMIN") {
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const res = await fetch("/api/users");
+        const data = await res.json();
+        if (data.success) {
+          setUsers(data.users);
+        }
+      } catch (error) {
+        toast.error("Failed to load users");
+      }
+    }
+    
+    if (currentUser?.role === "ADMIN") {
+      fetchUsers();
+      setIsAuthorized(true);
+    } else if (currentUser) {
+      setIsAuthorized(false);
+    }
+  }, [currentUser]);
+
+  if (isAuthorized === null) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthorized) {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
@@ -79,18 +110,6 @@ export default function UserApprovalsPage() {
       </div>
     );
   }
-
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const data = await getAllUsers();
-        setUsers(data);
-      } catch (error) {
-        toast.error("Failed to load users");
-      }
-    }
-    fetchUsers();
-  }, []);
 
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
@@ -120,36 +139,43 @@ export default function UserApprovalsPage() {
   ) => {
     setIsLoading(true);
     try {
-      const updatedUser = await updateUserStatus(
-        userId,
-        status,
-        reason,
-        currentUser.id
-      );
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, status, reason }),
+      });
 
-      if (updatedUser) {
-        // ✅ Await getAllUsers before setting state
-        const refreshedUsers = await getAllUsers();
+      const data = await res.json();
+
+      if (!data.success) {
+        toast.error(data.message || "Failed to update user");
+        setIsLoading(false);
+        return;
+      }
+
+      const refreshedRes = await fetch("/api/users");
+      const refreshedData = await refreshedRes.json();
+      if (refreshedData.success) {
         setUsers((prev) =>
           prev.map((u) =>
             u.id === userId
-              ? { ...u, status, rejectionReason: reason ?? null } // update only the changed user
+              ? { ...u, status, rejectionReason: reason ?? null }
               : u
           )
         );
-
-        setSelectedUser(null);
-        setActionReason("");
-
-        const actionText =
-          status === "APPROVED"
-            ? "approved"
-            : status === "REJECTED"
-              ? "rejected"
-              : "suspended";
-
-        toast.success(`User ${actionText} successfully`);
       }
+
+      setSelectedUser(null);
+      setActionReason("");
+
+      const actionText =
+        status === "APPROVED"
+          ? "approved"
+          : status === "REJECTED"
+            ? "rejected"
+            : "suspended";
+
+      toast.success(`User ${actionText} successfully`);
     } catch (error) {
       console.error(error);
       toast.error("Failed to update user status");

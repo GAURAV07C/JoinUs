@@ -1,171 +1,183 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import {
- 
-  getEventByIdAction,
-  // createEventAction,
-  updateEventAction,
-  updateEventStatusAction,
-  deleteEventAction,
-  getEventsAction,
-} from "@/actions/events"
-import { useEventsStore } from "@/stores/events-store"
-import { toast } from "sonner"
-import { EventStatus } from "@/types"
-import { createEventAction } from "@/actions/test"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useEventsStore } from "@/stores/events-store";
+import type { EventStatus } from "@/types";
 
-export const EVENTS_QUERY_KEY = "events"
+const API_BASE = "/api/eoptimise";
+
+export const EVENTS_QUERY_KEY = "events";
 
 export function useEvents() {
-  const setEvents = useEventsStore((state) => state.setEvents)
-  const setLoading = useEventsStore((state) => state.setLoading)
-  const setError = useEventsStore((state) => state.setError)
+  const setEvents = useEventsStore((state) => state.setEvents);
+  const setLoading = useEventsStore((state) => state.setLoading);
+  const setError = useEventsStore((state) => state.setError);
 
   return useQuery({
     queryKey: [EVENTS_QUERY_KEY],
     queryFn: async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const result = await getEventsAction()
+        const res = await fetch(API_BASE);
+        const data = await res.json();
 
-        if (!result.success) {
-          setError(result.message ?? null)
-          throw new Error(result.message)
+        if (!data.success) {
+          setError(data.message ?? null);
+          throw new Error(data.message);
         }
 
-        if (result.events) {
-          setEvents(result.events as any)
-          setError(null)
+        if (data.events) {
+          setEvents(data.events as any);
+          setError(null);
         }
-        return result.events
+        return data.events;
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     },
-    // Error and loading state are handled inside queryFn
-  })
+  });
 }
 
 export function useEvent(id: string) {
   return useQuery({
     queryKey: [EVENTS_QUERY_KEY, id],
     queryFn: async () => {
-      const result = await getEventByIdAction(id)
+      const res = await fetch(`${API_BASE}?id=${encodeURIComponent(id)}`);
+      const data = await res.json();
 
-      if (!result.success) {
-        throw new Error(result.message)
+      if (!data.success) {
+        throw new Error(data.message);
       }
 
-      return result.event
+      return data.event;
     },
     enabled: !!id,
-  })
+  });
 }
 
 export function useCreateEvent() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (formData: FormData) => {
-      // const result = await createEventAction(formData)
+    mutationFn: async (eventData: Record<string, any>) => {
+      const formData = new FormData();
+      Object.entries(eventData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      });
 
-      const result = await createEventAction(formData)
+      const res = await fetch("/api/events", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
 
-      if (!result.success) {
-        throw new Error(result.message)
+      if (!data.success) {
+        throw new Error(data.message);
       }
 
-      return result
+      return data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] })
-      toast.success(data.message)
+      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] });
+      toast.success(data.message);
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "Failed to create event")
+      toast.error(error instanceof Error ? error.message : "Failed to create event");
     },
-  })
+  });
 }
 
 export function useUpdateEvent() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ eventId, formData }: { eventId: string; formData: FormData }) => {
-      const result = await updateEventAction(eventId, formData)
+    mutationFn: async ({ eventId, eventData }: { eventId: string; eventData: Record<string, any> }) => {
+      const res = await fetch(`/api/events/${encodeURIComponent(eventId)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventData),
+      });
+      const data = await res.json();
 
-      if (!result.success) {
-        throw new Error(result.message)
+      if (!data.success) {
+        throw new Error(data.message);
       }
 
-      return result
+      return data;
     },
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] })
-      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY, variables.eventId] })
-      toast.success(data.message)
+      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY, variables.eventId] });
+      toast.success(data.message);
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "Failed to update event")
+      toast.error(error instanceof Error ? error.message : "Failed to update event");
     },
-  })
+  });
 }
 
 export function useUpdateEventStatus() {
-   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-   return useMutation({
-     mutationFn: async ({
-       eventId,
-       status,
-       reason,
-     }: {
-       eventId: string;
-       status: EventStatus;
-       reason?: string;
-     }) => {
-       const result = await updateEventStatusAction(eventId, status, reason);
+  return useMutation({
+    mutationFn: async ({
+      eventId,
+      status,
+      reason,
+    }: {
+      eventId: string;
+      status: EventStatus;
+      reason?: string;
+    }) => {
+      const res = await fetch(`/api/events?action=updateEventStatus`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventId, status, reason }),
+      });
+      const data = await res.json();
 
-       if (!result.success) {
-         throw new Error(result.message);
-       }
+      if (!data.success) {
+        throw new Error(data.message);
+      }
 
-       return result;
-     },
-     onSuccess: (data, variables) => {
-       queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] });
-       queryClient.invalidateQueries({
-         queryKey: [EVENTS_QUERY_KEY, variables.eventId],
-       });
-       toast.success(data.message);
-     },
-     onError: (error) => {
-       toast.error(
-         error instanceof Error ? error.message : "Failed to update event"
-       );
-     },
-   });
-
+      return data;
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY, variables.eventId] });
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : "Failed to update event");
+    },
+  });
 }
 
 export function useDeleteEvent() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (eventId: string) => {
-      const result = await deleteEventAction(eventId)
+      const res = await fetch(`/api/events?action=delete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventId }),
+      });
+      const data = await res.json();
 
-      if (!result.success) {
-        throw new Error(result.message)
+      if (!data.success) {
+        throw new Error(data.message);
       }
 
-      return result
+      return data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] })
-      toast.success(data.message)
+      queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] });
+      toast.success(data.message);
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "Failed to delete event")
+      toast.error(error instanceof Error ? error.message : "Failed to delete event");
     },
-  })
+  });
 }
