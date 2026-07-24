@@ -51,13 +51,17 @@ providers.push(
       const validatedFields = loginSchema.safeParse(credentials);
       if (!validatedFields.success) return null;
 
-      const { email, password } = validatedFields.data;
+      const { email, password, role } = validatedFields.data;
 
       const user = await getUserByEmail(email);
       if (!user || !user.password) return null;
 
       const passwordsMatch = await verifyPassword(password, user.password);
       if (!passwordsMatch) return null;
+
+      if (user.role !== role) {
+        throw new Error("Please select the correct role");
+      }
 
       if (user.status !== "APPROVED") {
         throw new Error(

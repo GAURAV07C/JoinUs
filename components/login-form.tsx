@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Eye, EyeOff, LogIn } from "lucide-react";
 
 import { loginSchema, type LoginFormData } from "@/lib/validation/authSchema";
+import { signIn } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,23 +73,22 @@ export function LoginForm() {
     setSucess("");
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        role: data.role,
+        redirect: false,
       });
 
-      const result = await res.json();
-
-      if (result.success) {
-        toast.success(result.message);
+      if (result?.error) {
+        toast.error(result.error);
+        setError(result.error);
+        form.setValue("password", "");
+      } else if (result?.ok) {
+        toast.success("Login successful!");
         setSucess("Success");
         form.reset();
         setTimeout(() => router.push("/dashboard"), 1000);
-      } else {
-        toast.error(result.message);
-        setError(result.message);
-        form.setValue("password", "");
       }
     } catch (err) {
       console.error("Unexpected login error:", err);
