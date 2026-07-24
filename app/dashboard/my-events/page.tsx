@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   useEventsQuery,
   useUserRegistrationsQuery,
@@ -30,10 +32,28 @@ import Link from "next/link";
 import { format } from "date-fns";
 
 export default function MyEventsPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const user = session?.user;
-
+  const router = useRouter();
   const role = user?.role;
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!user) {
+      router.replace("/auth/login");
+    }
+  }, [user, status, router]);
+
+  if (status === "loading" || !user) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const { data: events, isLoading: eventsLoading } = useEventsQuery();
   const { data: registrations, isLoading: registrationsLoading } =
@@ -176,7 +196,7 @@ export default function MyEventsPage() {
                     asChild
                     variant="default"
                     size="sm"
-                    className="bg-gradient-to-r from-sky-500 to-cyan-500"
+                    className="bg-linear-to-r from-sky-500 to-cyan-500"
                   >
                     <Link
                       href={`/event/${event.id}/qr?registrationId=${registration?.eventId}`}
@@ -206,13 +226,13 @@ export default function MyEventsPage() {
     actionHref?: string;
   }) => (
     <div className="text-center py-12">
-      <div className="mx-auto h-24 w-24 rounded-full bg-gradient-to-r from-sky-100 to-cyan-100 flex items-center justify-center mb-4">
+      <div className="mx-auto h-24 w-24 rounded-full bg-linear-to-r from-sky-100 to-cyan-100 flex items-center justify-center mb-4">
         <Calendar className="h-12 w-12 text-sky-500" />
       </div>
       <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
       <p className="text-gray-600 mb-6 max-w-md mx-auto">{description}</p>
       {actionText && actionHref && (
-        <Button asChild className="bg-gradient-to-r from-sky-500 to-cyan-500">
+        <Button asChild className="bg-linear-to-r from-sky-500 to-cyan-500">
           <Link href={actionHref}>
             <Plus className="h-4 w-4 mr-2" />
             {actionText}
@@ -232,7 +252,7 @@ export default function MyEventsPage() {
       </div>
 
       <Tabs defaultValue="registered" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
+        <TabsList className="grid w-full grid-cols-2 lg:w-100">
           <TabsTrigger value="registered">Registered Events</TabsTrigger>
           {role != "USER" && (
             <TabsTrigger value="created">Created Events</TabsTrigger>

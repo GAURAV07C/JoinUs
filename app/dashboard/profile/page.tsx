@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useSession,signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -16,9 +18,27 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-   const { data: session } = useSession();
-    const user = session?.user;
- 
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!user) {
+      router.replace("/auth/login");
+    }
+  }, [user, status, router]);
+
+  if (status === "loading" || !user) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const [profileData, setProfileData] = useState({
     name: user?.name,

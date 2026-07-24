@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { getAllEvents } from "@/lib/eoptimise";
+import { getAllEvents } from "@/lib/events-service";
 
 export async function GET(request: NextRequest) {
-  const cacheKey = "eoptimise-events";
   const cacheControl = "s-maxage=60, stale-while-revalidate=30";
 
   try {

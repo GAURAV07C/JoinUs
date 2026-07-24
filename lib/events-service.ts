@@ -1,4 +1,3 @@
-// import { db } from "@/lib/db";
 import { prisma } from "@/lib/prisma";
 import type { EventStatus, Event, EventForm } from "@prisma/client";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -40,8 +40,9 @@ import {
   Area,
   Pie,
 } from "recharts";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-// Mock analytics data
 const registrationData = [
   { date: "Mar 1", registrations: 12, revenue: 1800 },
   { date: "Mar 2", registrations: 19, revenue: 2850 },
@@ -106,8 +107,28 @@ const locationData = [
 ];
 
 export default function AnalyticsPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [timeRange, setTimeRange] = useState("7d");
   const [selectedMetric, setSelectedMetric] = useState("registrations");
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!session?.user) {
+      router.replace("/auth/login");
+    }
+  }, [session, status, router]);
+
+  if (status === "loading" || !session?.user) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const totalRegistrations = eventPerformance.reduce(
     (sum, event) => sum + event.registrations,
@@ -126,7 +147,7 @@ export default function AnalyticsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
           Event Analytics
         </h1>
         <p className="text-muted-foreground">
@@ -137,7 +158,7 @@ export default function AnalyticsPage() {
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-8">
         <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-45">
             <SelectValue placeholder="Time Range" />
           </SelectTrigger>
           <SelectContent>
@@ -156,7 +177,7 @@ export default function AnalyticsPage() {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-50 to-purple-100">
+        <Card className="border-0 shadow-lg bg-linear-to-br from-purple-50 to-purple-100">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -178,7 +199,7 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-pink-100">
+        <Card className="border-0 shadow-lg bg-linear-to-br from-pink-50 to-pink-100">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -200,7 +221,7 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-amber-50 to-amber-100">
+        <Card className="border-0 shadow-lg bg-linear-to-br from-amber-50 to-amber-100">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -222,7 +243,7 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-emerald-50 to-emerald-100">
+        <Card className="border-0 shadow-lg bg-linear-to-br from-emerald-50 to-emerald-100">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -361,7 +382,7 @@ export default function AnalyticsPage() {
                     className="flex items-center justify-between"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">
+                      <div className="w-8 h-8 rounded-full bg-linear-to-r from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">
                         {index + 1}
                       </div>
                       <span className="font-medium">{location.city}</span>

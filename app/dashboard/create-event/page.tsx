@@ -22,6 +22,8 @@ import { Separator } from "@/components/ui/separator";
 import { Plus, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { useCreateEvent } from "@/hooks/use-events";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 type EventForm = {
   id: string;
@@ -35,6 +37,26 @@ export default function CreateEventPage() {
   const { mutateAsync: createEvent } = useCreateEvent();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session, status } = useSession();
+  const user = session?.user;
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!user) {
+      router.replace("/auth/login");
+    }
+  }, [user, status, router]);
+
+  if (status === "loading" || !user) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
   const [eventData, setEventData] = useState({
     name: "",
     description: "",

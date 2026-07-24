@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Camera, Scan, CheckCircle, XCircle } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface ScanResult {
   name: string;
@@ -14,8 +16,28 @@ interface ScanResult {
 }
 
 export default function QRScannerPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [isScanning, setIsScanning] = useState(false);
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!session?.user) {
+      router.replace("/auth/login");
+    }
+  }, [session, status, router]);
+
+  if (status === "loading" || !session?.user) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleScan = () => {
     setIsScanning(true);

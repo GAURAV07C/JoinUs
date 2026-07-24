@@ -3,7 +3,13 @@
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { MapPin } from "lucide-react";
-import type { Event } from "@/types";
+
+interface Event {
+  type: string;
+  isPaid: boolean;
+  price: number;
+  venue?: string;
+}
 
 interface EventBadgesProps {
   event: Event;

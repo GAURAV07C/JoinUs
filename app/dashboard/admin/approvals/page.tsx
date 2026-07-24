@@ -159,7 +159,7 @@ export default function UserApprovalsPage() {
         setUsers((prev) =>
           prev.map((u) =>
             u.id === userId
-              ? { ...u, status, rejectionReason: reason ?? null }
+              ? { ...u, status, rejectionReason: reason ?? undefined }
               : u
           )
         );
@@ -190,19 +190,19 @@ export default function UserApprovalsPage() {
       APPROVED: "bg-green-100 text-green-800 border-green-200",
       REJECTED: "bg-red-100 text-red-800 border-red-200",
       SUSPENDED: "bg-orange-100 text-orange-800 border-orange-200",
-    };
+    } as const;
 
     const icons = {
       PENDING: Clock,
       APPROVED: CheckCircle,
       REJECTED: XCircle,
       SUSPENDED: AlertTriangle,
-    };
+    } as const;
 
-    const Icon = icons[status];
+    const Icon = icons[status as keyof typeof icons];
 
     return (
-      <Badge className={`${variants[status]} border`}>
+      <Badge className={`${variants[status as keyof typeof variants]} border`}>
         <Icon className="h-3 w-3 mr-1" />
         {status}
       </Badge>
