@@ -4,52 +4,52 @@ import type { EventStatus, Event, EventForm } from "@prisma/client";
 
 export async function getAllEvents() {
   try {
-    const events = await prisma.event.findMany({});
-    const allRegistrations = await prisma.eventRegistration.findMany({});
-    const allUsers = await prisma.user.findMany({});
-
-    return events.map((event: Event) => {
-      const registrationCount = allRegistrations.filter(
-        (reg: { eventId: string }) => reg.eventId === event.id
-      ).length;
-      const organizer = allUsers.find((user: { id: string }) => user.id === event.organizerId);
-
-      return {
-        id: event.id,
-        name: event.name,
-        description: event.description,
-        date: event.date,
-        time: event.time,
-        venue: event.venue,
-        city: event.city,
-        state: event.state,
-        address: event.address,
-        posterUrl: event.posterUrl,
-        type: event.type,
-        isPaid: event.isPaid,
-        price: event.price,
-        maxAttendees: event.maxAttendees,
-        status: event.status as EventStatus,
-        featured: event.featured,
-        tags: event.tags,
-        organizerId: event.organizerId,
-        organizer: organizer
-          ? {
-              id: organizer.id,
-              name: organizer.name,
-              email: organizer.email,
-              phone: organizer.phone,
-              avatar: organizer.avatar,
-              college: organizer.college,
-            }
-          : null,
-
-        currentAttendees: registrationCount,
-        reason: event.reason,
-        createdAt: event.createdAt,
-        updatedAt: event.updatedAt,
-      };
+    const events = await prisma.event.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        date: true,
+        time: true,
+        venue: true,
+        city: true,
+        state: true,
+        address: true,
+        posterUrl: true,
+        type: true,
+        isPaid: true,
+        price: true,
+        maxAttendees: true,
+        status: true,
+        featured: true,
+        tags: true,
+        organizerId: true,
+        reason: true,
+        createdAt: true,
+        updatedAt: true,
+        organizer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            avatar: true,
+            college: true,
+          },
+        },
+        _count: {
+          select: {
+            registrations: true,
+          },
+        },
+      },
     });
+
+    return events.map((event) => ({
+      ...event,
+      status: event.status as EventStatus,
+      currentAttendees: event._count?.registrations ?? 0,
+    }));
   } catch (error) {
     console.error("Error fetching events:", error);
     return [];
@@ -60,51 +60,54 @@ export async function getEventById(id: string) {
   try {
     const event = await prisma.event.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        date: true,
+        time: true,
+        venue: true,
+        city: true,
+        state: true,
+        address: true,
+        posterUrl: true,
+        type: true,
+        isPaid: true,
+        price: true,
+        maxAttendees: true,
+        status: true,
+        featured: true,
+        tags: true,
+        organizerId: true,
+        reason: true,
+        createdAt: true,
+        updatedAt: true,
+        organizer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            avatar: true,
+            college: true,
+          },
+        },
         eventForm: true,
-        registrations: true,
         formSubmissions: true,
-        organizer: true,
+        _count: {
+          select: {
+            registrations: true,
+          },
+        },
       },
     });
+
     if (!event) return null;
 
-    const registrations = await prisma.eventRegistration.findMany({
-      where: { eventId: id },
-      include: {
-        event: true,
-        user: true,
-      },
-    });
-    const registrationCount = registrations.length;
-
     return {
-      id: event.id,
-      name: event.name,
-      description: event.description,
-      date: event.date,
-      time: event.time,
-      venue: event.venue,
-      city: event.city,
-      state: event.state,
-      address: event.address,
-      posterUrl: event.posterUrl,
-      type: event.type,
-      isPaid: event.isPaid,
-      price: event.price,
-      maxAttendees: event.maxAttendees,
+      ...event,
       status: event.status as EventStatus,
-      featured: event.featured,
-      tags: event.tags,
-      eventForm: event.eventForm,
-      registrations: event.organizer,
-      organizer: event.organizer,
-      organizerId: event.organizerId,
-      formSubmissions: event.formSubmissions,
-      currentAttendees: registrationCount,
-      reason: event.reason,
-      createdAt: event.createdAt,
-      updatedAt: event.updatedAt,
+      currentAttendees: event._count?.registrations ?? 0,
     };
   } catch (error) {
     console.error("Error fetching event by ID:", error);
@@ -138,8 +141,8 @@ export async function createEvent(eventData: {
   tags?: string[];
   featured?: boolean;
   formFields?: Record<string, any>[];
-  status?: EventStatus; // ✅ optional status
-  reason?: string; // ✅ optional reason (used only if status === "REJECTED")
+  status?: EventStatus;
+  reason?: string;
 }) {
   const {
     name,
@@ -165,50 +168,47 @@ export async function createEvent(eventData: {
   } = eventData;
 
   try {
-    const [event, eventForm] = await prisma
-      .$transaction([
-        prisma.event.create({
-          data: {
-            name,
-            description,
-            date,
-            time,
-            venue,
-            city,
-            state,
-            address,
-            posterUrl,
-            type,
-            isPaid,
-            price,
-            maxAttendees,
-            organizerId,
-            tags: tags || [],
-            featured: featured || false,
-            status: status ?? "DRAFT",
-            reason: status === "REJECTED" ? (reason ?? null) : null,
-          },
-        }),
-        prisma.eventForm.create({
-          data: {
-            eventId: "TEMP", // placeholder
-            fields: formFields ?? [],
-          },
-        }),
-      ])
-      .then(async ([event, form]: [Event, EventForm]) => {
-        const updatedForm = await prisma.eventForm.update({
-          where: { id: form.id },
-          data: { eventId: event.id },
-        });
-        return [event, updatedForm];
-      });
+    const [event, eventForm] = await prisma.$transaction([
+      prisma.event.create({
+        data: {
+          name,
+          description,
+          date,
+          time,
+          venue,
+          city,
+          state,
+          address,
+          posterUrl,
+          type,
+          isPaid,
+          price,
+          maxAttendees,
+          organizerId,
+          tags: tags || [],
+          featured: featured || false,
+          status: status ?? "DRAFT",
+          reason: status === "REJECTED" ? (reason ?? null) : null,
+        },
+      }),
+      prisma.eventForm.create({
+        data: {
+          eventId: "TEMP",
+          fields: formFields ?? [],
+        },
+      }),
+    ]);
+
+    const updatedForm = await prisma.eventForm.update({
+      where: { id: eventForm.id },
+      data: { eventId: event.id },
+    });
 
     return {
       ...event,
       organizer,
       currentAttendees: 0,
-      eventForm,
+      eventForm: updatedForm,
     };
   } catch (error) {
     console.error("Error creating event:", error);
@@ -248,16 +248,13 @@ export async function updateEvent(
     if (eventData.city) updateData.city = eventData.city;
     if (eventData.state) updateData.state = eventData.state;
     if (eventData.address !== undefined) updateData.address = eventData.address;
-    if (eventData.posterUrl !== undefined)
-      updateData.posterUrl = eventData.posterUrl;
+    if (eventData.posterUrl !== undefined) updateData.posterUrl = eventData.posterUrl;
     if (eventData.type) updateData.type = eventData.type;
     if (eventData.isPaid !== undefined) updateData.isPaid = eventData.isPaid;
     if (eventData.price !== undefined) updateData.price = eventData.price;
-    if (eventData.maxAttendees)
-      updateData.maxAttendees = eventData.maxAttendees;
+    if (eventData.maxAttendees) updateData.maxAttendees = eventData.maxAttendees;
     if (eventData.status) updateData.status = eventData.status;
-    if (eventData.featured !== undefined)
-      updateData.featured = eventData.featured;
+    if (eventData.featured !== undefined) updateData.featured = eventData.featured;
     if (eventData.tags !== undefined) updateData.tags = eventData.tags;
 
     const event = await prisma.event.findUnique({ where: { id } });
@@ -268,10 +265,9 @@ export async function updateEvent(
       data: updateData,
     });
 
-    const registrations = await prisma.eventRegistration.findMany({
+    const registrationCount = await prisma.eventRegistration.count({
       where: { eventId: id },
     });
-    const registrationCount = registrations.length;
 
     return {
       id: updatedEvent.id,

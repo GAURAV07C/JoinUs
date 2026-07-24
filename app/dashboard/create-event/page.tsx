@@ -93,12 +93,12 @@ export default function CreateEventPage() {
       }));
       formData.append("formFields", JSON.stringify(cleanFormFields));
 
-      console.log("Submitting event data:", Object.fromEntries(formData));
-
       await createEvent(formData);
 
       toast.success("Event created successfully!");
+
       router.push("/dashboard/my-events");
+
     } catch (error) {
       console.error("Event creation failed:", error);
       toast.error("Failed to create event");
@@ -129,7 +129,6 @@ export default function CreateEventPage() {
       options: [],
     });
 
-    console.log("Added new field:", field);
     toast.success("Field added successfully");
   };
 

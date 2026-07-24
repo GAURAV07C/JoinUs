@@ -54,8 +54,6 @@ export function FormBuilder({
       }
     });
 
-    console.log("f", fields);
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;

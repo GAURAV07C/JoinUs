@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { loginSchema } from "@/lib/validation/authSchema";
 import { getUserByEmail, verifyPassword } from "@/data/user";
 
