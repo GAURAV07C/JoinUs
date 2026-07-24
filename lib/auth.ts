@@ -7,17 +7,6 @@ import { prisma } from "./prisma";
 import authConfig from "@/lib/auth.config";
 import { UserRole, UserStatus } from "@/lib/validation/types";
 
-async function testprisma() {
-  try {
-    await prisma.$connect();
-    console.log("Database connected successfully!");
-  } catch (error) {
-    console.error("Database connection failed:", error);
-  }
-}
-testprisma();
-
-
 const result = NextAuth({
   pages: {
     signIn: "/auth/login",

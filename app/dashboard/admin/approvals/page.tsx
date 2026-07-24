@@ -405,7 +405,7 @@ export default function UserApprovalsPage() {
                         )}
                         <div className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
-                          {user.createdAt.toLocaleDateString()}
+                          {new Date(user.createdAt).toLocaleDateString()}
                         </div>
                       </div>
                     </div>
@@ -502,13 +502,9 @@ export default function UserApprovalsPage() {
                                     <span className="font-medium">
                                       Registered:
                                     </span>{" "}
-                                    {selectedUser.createdAt.toLocaleDateString()}
-                                  </div>
-                                  <div>
-                                    <span className="font-medium">
-                                      Last Updated:
-                                    </span>{" "}
-                                    {selectedUser.updatedAt.toLocaleDateString()}
+                                    {new Date(selectedUser.createdAt).toLocaleDateString()}
+
+                                    {new Date(selectedUser.updatedAt).toLocaleDateString()}
                                   </div>
                                   {selectedUser.approvedBy && (
                                     <div>
@@ -523,7 +519,7 @@ export default function UserApprovalsPage() {
                                       <span className="font-medium">
                                         Approved On:
                                       </span>{" "}
-                                      {selectedUser.approvedAt.toLocaleDateString()}
+                                      {new Date(selectedUser.approvedAt).toLocaleDateString()}
                                     </div>
                                   )}
                                 </div>
