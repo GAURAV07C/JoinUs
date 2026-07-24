@@ -19,7 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { signupAction } from "@/actions/auth";
 import { useState } from "react";
 import { toast } from "sonner";
 import { signupSchema, type SignupFormData as SignupData } from "@/lib/validation/authSchema";
@@ -49,11 +48,16 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
   const handleSubmit = async (data: SignupData) => {
     setIsLoading(true);
     try {
-      const result = await signupAction(data);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
 
       if (result.success) {
         toast.success(result.message);
-        // Optionally reset the form or redirect
         form.reset();
       } else {
         toast.error(result.message);
@@ -69,7 +73,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-        {/* Name Field */}
         <FormField
           control={form.control}
           name="name"
@@ -84,7 +87,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
           )}
         />
 
-        {/* Email Field */}
         <FormField
           control={form.control}
           name="email"
@@ -99,7 +101,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
           )}
         />
 
-        {/* Phone Field */}
         <FormField
           control={form.control}
           name="phone"
@@ -114,7 +115,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
           )}
         />
 
-        {/* Role Selection */}
         <FormField
           control={form.control}
           name="role"
@@ -138,7 +138,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
           )}
         />
 
-        {/* College Field */}
         <FormField
           control={form.control}
           name="college"
@@ -153,7 +152,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
           )}
         />
 
-        {/* Department Field */}
         <FormField
           control={form.control}
           name="department"
@@ -168,7 +166,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
           )}
         />
 
-        {/* Year Field */}
         <FormField
           control={form.control}
           name="year"
@@ -183,7 +180,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
           )}
         />
 
-        {/* Password Field */}
         <FormField
           control={form.control}
           name="password"
@@ -198,7 +194,6 @@ export function RegistrationForm({ eventId }: RegistrationFormProps) {
           )}
         />
 
-        {/* Confirm Password Field */}
         <FormField
           control={form.control}
           name="confirmPassword"

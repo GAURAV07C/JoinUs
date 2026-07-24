@@ -13,7 +13,6 @@ import {
   signupSchema,
   type SignupFormData,
 } from "@/lib/validation/authSchema";
-import { signupAction } from "@/actions/auth";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,9 +80,15 @@ export function SignupForm() {
     setError("");
     setSucess("");
     try {
-      const res = await signupAction(data);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-      if (res.success) {
+      const result = await res.json();
+
+      if (result.success) {
         toast.success("🎉 Account created successfully!", {
           description: "Redirecting to login page...",
           duration: 2500,
@@ -93,7 +98,7 @@ export function SignupForm() {
         setTimeout(() => router.push("/dashboard"), 1000);
       } else {
         toast.error("Signup failed", {
-          description: res.message ?? "Please try again later.",
+          description: result.message ?? "Please try again later.",
           duration: 3000,
         });
       }
@@ -115,7 +120,6 @@ export function SignupForm() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        {/* Header */}
         <div className="text-center mb-8">
           <Link
             href="/"
@@ -175,7 +179,6 @@ export function SignupForm() {
                 onSubmit={form.handleSubmit(handleSubmit)}
                 className="space-y-4"
               >
-                {/* Name */}
                 <FormField
                   control={form.control}
                   name="name"
@@ -190,7 +193,6 @@ export function SignupForm() {
                   )}
                 />
 
-                {/* Email */}
                 <FormField
                   control={form.control}
                   name="email"
@@ -209,7 +211,6 @@ export function SignupForm() {
                   )}
                 />
 
-                {/* Phone */}
                 <FormField
                   control={form.control}
                   name="phone"
@@ -227,7 +228,6 @@ export function SignupForm() {
                   )}
                 />
 
-                {/* Role */}
                 <FormField
                   control={form.control}
                   name="role"
@@ -244,9 +244,9 @@ export function SignupForm() {
                         <SelectContent>
                           <SelectItem value="USER">Student</SelectItem>
                           <SelectItem value="ORGANIZER">
-                            Event Organizer
+                            Organizer
                           </SelectItem>
-                          <SelectItem value="ADMIN">Administrator</SelectItem>
+                          <SelectItem value="ADMIN">Admin</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -256,7 +256,6 @@ export function SignupForm() {
 
                 {(selectedRole === "USER" || selectedRole === "ORGANIZER") && (
                   <>
-                    {/* College */}
                     <FormField
                       control={form.control}
                       name="college"
@@ -274,7 +273,6 @@ export function SignupForm() {
                       )}
                     />
 
-                    {/* Department */}
                     <FormField
                       control={form.control}
                       name="department"
@@ -335,7 +333,6 @@ export function SignupForm() {
                   </>
                 )}
 
-                {/* Password */}
                 <FormField
                   control={form.control}
                   name="password"
@@ -365,12 +362,14 @@ export function SignupForm() {
                           </Button>
                         </div>
                       </FormControl>
+                      <FormDescription>
+                        Password must contain at least 8 characters, including letters, numbers, and special characters.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                {/* Confirm Password */}
                 <FormField
                   control={form.control}
                   name="confirmPassword"
@@ -410,12 +409,7 @@ export function SignupForm() {
                 <FormError message={error || urlError} />
                 <FormSucess message={sucess} />
 
-                {/* Submit */}
-                <Button
-                  type="submit"
-                  className="w-full h-11 bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-600 hover:to-cyan-600"
-                  disabled={isLoading}
-                >
+                <Button type="submit" className="w-full h-11 bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-600 hover:to-cyan-600" disabled={isLoading}>
                   {isLoading ? (
                     <motion.div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (

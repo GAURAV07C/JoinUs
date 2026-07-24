@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { ArrowLeft, Eye, EyeOff, LogIn } from "lucide-react";
 
 import { loginSchema, type LoginFormData } from "@/lib/validation/authSchema";
-import { loginAction } from "@/actions/auth";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,7 +57,6 @@ export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // ✅ Use form object instead of just control
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -74,21 +72,23 @@ export function LoginForm() {
     setSucess("");
 
     try {
-      // ✅ Await loginAction result
-      const res = await loginAction(data);
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-      // ✅ Show toast based on result
-      if (res.success) {
-        toast.success(res.message);
+      const result = await res.json();
+
+      if (result.success) {
+        toast.success(result.message);
         setSucess("Success");
         form.reset();
-
-        // Redirect after short delay
         setTimeout(() => router.push("/dashboard"), 1000);
       } else {
-        toast.error(res.message);
-        setError(res.message);
-        form.setValue("password", ""); // clear password on error
+        toast.error(result.message);
+        setError(result.message);
+        form.setValue("password", "");
       }
     } catch (err) {
       console.error("Unexpected login error:", err);
@@ -106,7 +106,6 @@ export function LoginForm() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        {/* Header */}
         <div className="text-center mb-8">
           <Link
             href="/"
@@ -130,7 +129,6 @@ export function LoginForm() {
           </p>
         </div>
 
-        {/* Card */}
         <Card className="border-0 shadow-xl">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">Sign In</CardTitle>
@@ -166,7 +164,6 @@ export function LoginForm() {
                 onSubmit={form.handleSubmit(handleSubmitFn)}
                 className="space-y-4"
               >
-                {/* Role Field */}
                 <FormField
                   control={form.control}
                   name="role"
@@ -197,7 +194,6 @@ export function LoginForm() {
                   )}
                 />
 
-                {/* Email Field */}
                 <FormField
                   control={form.control}
                   name="email"
@@ -212,7 +208,6 @@ export function LoginForm() {
                   )}
                 />
 
-                {/* Password Field */}
                 <FormField
                   control={form.control}
                   name="password"
@@ -248,7 +243,6 @@ export function LoginForm() {
                 />
                 <FormError message={error || urlError} />
                 <FormSucess message={sucess} />
-                {/* Submit Button */}
                 <Button
                   type="submit"
                   className="w-full h-11 bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-600 hover:to-cyan-600"
@@ -267,7 +261,6 @@ export function LoginForm() {
             </Form>
           </CardContent>
 
-          {/* Footer */}
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
@@ -284,3 +277,4 @@ export function LoginForm() {
     </div>
   );
 }
+
