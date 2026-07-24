@@ -1,6 +1,3 @@
-"use server";
-
-
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import type {  UserStatus } from "@/types";
